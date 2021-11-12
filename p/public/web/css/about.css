@@ -1,0 +1,94 @@
+.biref{
+    margin-bottom: 80px;
+}
+.biref .flex{
+    padding: 100px 0;
+}
+.biref .flex>div{
+    width: 50%;
+}
+.biref .flex .text{
+    line-height:36px;
+    margin-top: 50px;
+}
+.pics{
+    background: url(../image/aboutImg/about_pic2.png);
+    height: 800px;
+}
+.pics img{
+   width: 25%;
+   height: 400px;
+}
+.pics div{
+    width: 25%;
+    height: 400px;
+}
+.develop .time_line_img{
+    background: url('../image/aboutImg/icon_about_timeline.png');
+    height: 57px;
+}
+.develop .time_line{
+   font-size:24px;
+   font-weight:bold;
+   width: 1500px;
+   margin: 20px auto;
+}
+.develop .time_text{
+   width: 1500px;
+   margin: 20px auto;
+}
+.develop .time_text p{
+   width: 207px;
+   text-align: center;
+}
+.originator .centerDiv .left{
+   width:400px;
+   height:530px;
+   text-align: center;
+ 
+}
+
+.originator .centerDiv .right{
+   padding: 60px 40px;
+   width: 60%;
+   border:1px solid rgba(204,204,204,1);
+}
+.originator .centerDiv .headTitle{
+   font-size:20px;
+   font-weight:bold;
+   margin-bottom: 50px;
+}
+.originator .centerDiv .text{
+   font-size:16px;
+   font-weight:400;
+   line-height:36px;
+}
+.group .centerDiv .img_group>div{
+    width: 290px;
+    background: url('../image/aboutImg/bg_about_pic.png');
+    height: 320px;
+    text-align: center;
+}
+.group .centerDiv .img_group .name{
+    font-size:18px;
+    font-weight:bold;
+    color:rgba(52,52,52,1);
+    margin: 10px 0;
+}
+.group{
+    margin-bottom: 220px;
+}
+.group .centerDiv .flex_a img{
+    margin-top: 67px;
+  
+    height: 253px;
+}
+.group .centerDiv .text_group>div{
+    width: 23%;
+    text-align: center;
+}
+.group .centerDiv .text_group p{
+   font-size:18px;
+   font-weight:bold;
+   padding: 20px 0;
+}

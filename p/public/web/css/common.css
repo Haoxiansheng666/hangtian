@@ -1,0 +1,105 @@
+*{
+	margin: 0;padding: 0;
+}
+ul,li{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+	color: #000;
+}
+.flex{
+	display: flex;
+	flex-wrap: wrap;
+}
+.flex_a{
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+.flex_b{
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.flex_c{
+	display: flex;
+	justify-content: center;
+}
+.p10{
+	padding: 10px;
+}
+.c-color{
+	font-weight: bold;
+	color:#004a8b !important
+}
+.text-color{
+	color:#004a8b !important;
+	font-weight: bold;
+}
+.danColor{
+	color:#666666;
+}
+.title{
+	width: 250px;
+	height: 60px;
+	text-align: center;
+	color: rgb(177,177,177);
+	font-size: 20px;
+	font-weight: 600;
+
+}
+.title>div{
+	font-size: 18px;
+	margin-top: 10px;
+	white-space: nowrap;
+
+	font-family: -webkit-pictograph;
+}
+.title>span{
+	font-size: 25px;
+}
+.centerDiv{
+	width: 1300px;
+	margin: 0 auto;
+}
+.banner{
+	background-image: url('../image/aboutImg/about_banner.png');
+	height: 390px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	 color:#fff;
+	 margin-top: 13px;
+}
+.banner .center{
+	text-align: center;margin: 0 5px;
+}
+.banner .center>div:first-child{
+	
+}
+.banner .center>div:last-child{
+	font-size: 25px;
+}
+.serviceBtn{
+	width:80px;
+	height:120px;
+	background:rgba(0,74,140,1);
+	position: fixed;
+	right: 10px;
+	top: 45%;
+	text-align: center;
+	padding: 20px 0;
+	color: #fff;
+	z-index: 50;
+}
+.service img{
+	width: 40px;
+	height:40px;
+}
+.serviceBtn .service{
+	width:16px;margin: 0 auto;
+}
+h1{
+	font-size: 26px;
+}
