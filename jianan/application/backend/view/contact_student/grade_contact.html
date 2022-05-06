@@ -1,0 +1,131 @@
+{include file="public/header" /}
+
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+</style>
+<blockquote class="layui-elem-quote" style="margin-top:36px;margin-left: 30px;">
+    联系学员
+    <a class="layui-btn  layui-btn-sm layui-btn-warm" onclick="refund();" style="float:right;">
+        <i class="layui-icon">&#xe65c;</i>返回列表
+    </a>
+</blockquote>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学员姓名<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$student.pay_student.name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学员电话<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$student.pay_student.mobile}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">培训时间<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$student.grade.train_action_time_text} - {$student.grade.train_end_time_text}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">培训地点<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$student.grade.site_address}">
+                    </div>
+                </div>
+                {if !empty($service_contact)}
+                <div class="layui-form-item" style="background-color: #f2f2f2;">
+                    <label class="layui-form-label">联系记录<span class="reqcolor"></span></label>
+                    {foreach $service_contact as $k => $v}
+                    <div class="layui-input-block" style="line-height: 36px">
+                        联系时间:{$v.contact_time_text} &nbsp;&nbsp;&nbsp;&nbsp;
+                        备注信息:{$v.remark}&nbsp;&nbsp;&nbsp;&nbsp;
+                        联系客服:{$v.admin.real_name}
+                    </div>
+                    {/foreach}
+                </div>
+                {/if}
+                <div class="layui-form-item" style="width:40%; margin: 0 auto;text-align: center">
+                    <div class="layui-input-inline">
+                        <button type="button" class="layui-btn" id="tongyi-1">能准时参加</button>
+                    </div>
+<!--                    <div class="layui-input-inline">-->
+<!--                        <button type="button" class="layui-btn" id="jujue-1" style="background-color: #8F938F">待定</button>-->
+<!--                    </div>-->
+                    <div class="layui-input-inline">
+                        <button type="button" class="layui-btn" id="jujue-2" style="background-color: #8F938F">不能准时参加</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="height: 50px;width: 100%;overflow: hidden"></div>
+    </div>
+
+</div>
+<script>
+    $("#tongyi-1").click(function () {
+        var url = "{:Url('ContactStudent/consent')}";
+        var data = {id:"{$id}",type:'grade'};
+        jqueryAjax('POST',url,data,successReload);
+    });
+    $("#jujue-1").click(function () {
+        let id = "{$id}";
+        var url = "{:Url('ContactStudent/undetermined')}?id="+id+"&type=grade";
+        x_admin_show('拒绝原因',url,400,400);
+        return false;
+    });
+    $("#jujue-2").click(function () {
+        let id = "{$id}";
+        var url = "{:Url('ContactStudent/refuse')}" + "?id="+id+"&type=grade";
+        x_admin_show('拒绝原因',url,400,400);
+        return false;
+    });
+
+    /**
+     * 返回上级
+     */
+    function refund() {
+        let type = 'grade';
+        let id = "{$id}";
+        // 清除锁定cache
+        $.ajax({
+            url:"{:url('ContactStudent/contact_cache_delete')}",
+            data:{id:id,type:type},
+            dataType:"JSON",
+            success:function (res) {
+                if (res.code != 1){
+                    layer.msg('服务器错误');
+                    return false;
+                }else{
+                    location.href = "{$refund|default='#'}";
+                }
+            }
+        });
+    }
+</script>
+
+{include file="public/footer" /}
+

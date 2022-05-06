@@ -1,0 +1,320 @@
+{include file="public/header" /}
+
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+</style>
+<blockquote class="layui-elem-quote" style="margin-top:36px;margin-left: 30px;">
+    {$data['ress']->name}
+    <a class="layui-btn  layui-btn-sm layui-btn-warm" href="{$data.refund}" style="float:right;">
+        <i class="layui-icon">&#xe65c;</i>返回列表
+    </a>
+</blockquote>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">客户详情</li>
+        <li>缴费详情</li>
+        {if !empty($grade_student)}
+        <li>培训记录</li>
+        {/if}
+        {if !empty($exam_student)}
+        <li>考试记录</li>
+        {/if}
+        {if !empty($refund_log)}
+        <li>退费记录</li>
+        {/if}
+        {if !empty($invoice_log)}
+        <li>发票记录</li>
+        {/if}
+    </ul>
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户类型<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$data['ress']['user_type_text']?$data['ress']['user_type_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">报名类型<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$data['ress']['apply_type_text']?$data['ress']['apply_type_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户称呼<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$data['ress']['name']?$data['ress']['name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="mobile" type="text" value="{$data['ress']['mobile']?$data['ress']['mobile']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证号</label>
+                    <div class="layui-input-block">
+                        <input  class="layui-input" data-rule="IDcard" disabled name="mobile" type="text" value="{$data['ress']['id_card']?$data['ress']['id_card']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户分类<span style="color:red;"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled id="from_text" type="text" value="{$data['ress']->from_text|default=''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户单位名称</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="mobile" type="text" value="{$data['ress']['company']?$data['ress']['company']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工种</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="mobile" type="text" value="{$data['ress']['profession']['name']?$data['ress']['profession']['name']:''}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">课程总金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="total_price" type="text" value="{$data['ress']['total_price']?$data['ress']['total_price']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">付费类型</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_type_text" type="text" value="{$data['ress']['pay_type_text']?$data['ress']['pay_type_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">缴费金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_price" type="text" value="{$data['ress']['pay_price']?$data['ress']['pay_price']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">付费方式</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_way_text" type="text" value="{$data['ress']['pay_way_text']?$data['ress']['pay_way_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">付费渠道</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_site_text" type="text" value="{$data['ress']['pay_site_text']?$data['ress']['pay_site_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付方式</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="proceeds_type_text" type="text" value="{$data['ress']['proceeds_type_text']?$data['ress']['proceeds_type_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付时间</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_time" type="text" value="{$data['ress']['pay_time_text']?$data['ress']['pay_time_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否推荐就业</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="recommend_job_text" type="text" value="{$data['ress']['recommend_job_text']?$data['ress']['recommend_job_text']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注说明</label>
+                    <div class="layui-input-block">
+                        <textarea disabled class="layui-textarea">{$data['ress']['remark']?$data['ress']['remark']:''}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">缴费凭证</label>
+                    <div class="layui-input-block">
+                        {if !empty($data.ress.pay_proof)}
+                        <img src="{$data.ress.pay_proof}" alt="">
+                        {/if}
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {if !empty($pay_log)}
+                {foreach $pay_log as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline" style="width: 25%">
+                            提交审核时间：{$v.create_time_text}
+                        </div>
+                        <div class="layui-input-inline">
+                            金额：{$v.pay_price}
+                        </div>
+                        <div class="layui-input-inline">
+                            付费方式：{$v.pay_way_text}
+                        </div>
+                        <div class="layui-input-inline">
+                            支付渠道：{$v.pay_site_text}
+                        </div>
+                        <div class="layui-input-inline">
+                            支付方式：{$v.proceeds_type_text}
+                        </div>
+                    </div>
+                    <div class="layui-input-block">
+                        备注内容:{$v.remark}
+                    </div>
+                    <div class="layui-input-block image_max">
+                        支付凭证: <img src="{$v.pay_proof}" style="width: 5%;" class="image_max">
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                {/foreach}
+                {/if}
+            </form>
+        </div>
+        {if !empty($grade_student)}
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {foreach $grade_student as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline" style="width: 25%">
+                            添加班级时间：{$v.create_time_text}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            班级名称：{$v.grade.name}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            联系状态：{$v.contact_status_text}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                {/foreach}
+
+            </form>
+        </div>
+        {/if}
+        {if !empty($exam_student)}
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {foreach $exam_student as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline" style="width: 25%">
+                            添加考试时间：{$v.create_time_text}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            考试计划名称：{$v.exam.name}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            联系状态：{$v.contact_status_text}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                {/foreach}
+            </form>
+        </div>
+        {/if}
+        {if !empty($refund_log)}
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {foreach $refund_log as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline" style="width: 25%">
+                            申请时间：{$v.create_time_text}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            退款金额：{$v.pay_price}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            审核状态：{$v.status_text}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                {/foreach}
+            </form>
+        </div>
+        {/if}
+        {if !empty($invoice_log)}
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {foreach $invoice_log as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline" style="width: 18%">
+                            申请时间：{$v.create_time_text}
+                        </div>
+                        <div class="layui-input-inline" style="width: 15%">
+                            开票金额：{$v.price}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            公司名称：{$v.company_name}
+                        </div>
+                        <div class="layui-input-inline" style="width: 25%">
+                            审核状态：{$v.status_text}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                {/foreach}
+            </form>
+        </div>
+        {/if}
+        <div style="height: 50px;width: 100%;overflow: hidden"></div>
+    </div>
+
+</div>
+<script>
+    $("#tongyi-1").click(function () {
+        layer.confirm('请确定同意报名资料审核',function(index){
+            var url = "{:Url('PayStudent/consent')}";
+            var data = {id:"{$data.ress.id}"};
+            jqueryAjax('POST',url,data,successReload);
+        });
+    });
+    $("#jujue-1").click(function () {
+        layer.confirm('请确定拒绝报名资料审核',function(index){
+            let id = "{$data.ress.id}";
+            var url = "{:Url('PayStudent/refuse')}" + "?id="+id;
+            layer.close(index);
+            x_admin_show('拒绝原因',url,400,400);
+            return false;
+        });
+    });
+</script>
+
+{include file="public/footer" /}
+

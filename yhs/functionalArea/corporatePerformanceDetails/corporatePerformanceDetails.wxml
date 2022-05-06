@@ -1,0 +1,19 @@
+<view class="cfc_box">
+  <view class="subject">工程类别: {{Details.cate}}</view>
+  <view class="subject">工程承包方式: {{Details.type}}</view>
+  <view class="subject">工程规模: {{Details.scale}}</view>
+  <view class="subject">开工时间: {{Details.start_time}}</view>
+  <view class="subject">竣工时间: {{Details.end_time}}</view>
+  <view class="subject">其他说明: {{Details.else}}</view>
+  <view class="subject">合同金额: {{Details.money}}</view>
+</view>
+<view class="file">
+  <view class="fl_t">业绩文档：{{Details.source}}</view>
+  <view class="fl_c">
+    <image src="/static/image/13.png" />
+  </view>
+</view>
+<view class="isnull" wx:if="{{Details == ''}}">
+  <image src="/static/image/null.png"></image>
+  <view>这里空空如也...</view>
+</view>

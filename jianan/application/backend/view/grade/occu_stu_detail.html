@@ -1,0 +1,130 @@
+{include file="public/header" /}
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+</style>
+<blockquote class="layui-elem-quote" style="margin-top:36px;margin-left: 30px;">
+    {$data['ress']['name']}学员的详情
+    <a class="layui-btn  layui-btn-sm layui-btn-warm" href="{$data.refund}" style="float:right;">
+        <i class="layui-icon">&#xe65c;</i>返回列表
+    </a>
+</blockquote>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓名<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$data['ress']['name']?$data['ress']['name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机号<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="mobile" type="text" value="{$data['ress']['mobile']?$data['ress']['mobile']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证号<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="id_card" type="text" value="{$data['ress']['id_card']?$data['ress']['id_card']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">家庭地址</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="address" type="text" value="{$data['ress']['address']?$data['ress']['address']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" data-rule="IDcard" disabled name="mobile" type="text" value="{$data['ress']['id_card']?$data['ress']['id_card']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">人员类别<span style="color:red;"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled id="from_text" type="text" value="{$data['ress']['type']|default=''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单位名称</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="company" type="text" value="{$data['ress']['company']?$data['ress']['company']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">工种</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="mobile" type="text" value="{$data['ress']['profession_top']|default=''} - - {$data['ress']['profession']|default=''}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">项目类别</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="level" type="text" value="{$data['ress']['level']?$data['ress']['level']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">补贴金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="price" type="text" value="{$data['ress']['price']?$data['ress']['price']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">证书编号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="code" type="text" value="{$data['ress']['code']?$data['ress']['code']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea disabled class="layui-textarea">{$data['ress']['remark']?$data['ress']['remark']:''}</textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="height: 50px;width: 100%;overflow: hidden"></div>
+    </div>
+
+</div>
+<script>
+    $("#tongyi-1").click(function () {
+        layer.confirm('请确定同意报名资料审核',function(index){
+            var url = "{:Url('PayStudent/consent')}";
+            var data = {id:"{$data.ress.id}"};
+            jqueryAjax('POST',url,data,successReload);
+        });
+    });
+    $("#jujue-1").click(function () {
+        layer.confirm('请确定拒绝报名资料审核',function(index){
+            let id = "{$data.ress.id}";
+            var url = "{:Url('PayStudent/refuse')}" + "?id="+id;
+            layer.close(index);
+            x_admin_show('拒绝原因',url,400,400);
+            return false;
+        });
+    });
+</script>
+
+{include file="public/footer" /}
+

@@ -1,0 +1,95 @@
+.pro_two{
+	width: 100%;
+	background: #f4f4f4;
+	padding-top: 82px;
+	font-size: 0;
+	padding-bottom: 80px;
+}
+.ptwo{
+	width: 1400px;
+	margin: 0 auto;
+	
+}
+.ptwo>div{
+	display: inline-block;
+	width: 452px;
+	text-align: left;
+}
+.ptwo>div:nth-child(n+2){
+	margin-left: 22px;
+}
+.ptwo>div>p{
+	font-size: 36px;
+	color: #333333;
+	margin-bottom: 19px;
+}
+.ptwo>div>span{
+	font-size: 16px;
+	color: #666666;
+	display: block;
+	margin-bottom: 43px;
+}
+.ptwo>div>img{
+	width: 452px;
+	height: 339px;
+}
+
+
+/* p333 */
+
+.pro_three{
+	width: 100%;
+	padding-top: 80px;
+	padding-bottom: 91px;
+	font-size: 0;
+}
+.pthree{
+	width: 1400px;
+	margin: 0 auto;
+}
+.pthree>div{
+	width: 685px;
+	display: inline-block;
+}
+.pthree>div:nth-child(n+2){
+	margin-left: 30px;
+}
+.pthree>div>img{
+	width: 685px;
+	height: 514px;
+	margin-bottom: 38px;
+}
+.pthree>div>p{
+	font-size: 36px;
+	color: #333333;
+	margin-bottom: 23px;
+}
+.pthree>div>span{
+	font-size: 16px;
+	color: #666666;
+}
+
+
+
+/* p4  __________ */
+
+.pro_four{
+	width: 100%;
+	padding-top: 80px;
+	padding-bottom: 80px;
+	background: #f4f4f4;
+}
+.pro_four>div{
+	width: 1400px;
+	height: 460px;
+	margin: 0 auto;
+}
+.pro_four>div>img{
+	width: 100%;
+}
+.packs{
+	padding-bottom: 58px;
+}
+
+
+

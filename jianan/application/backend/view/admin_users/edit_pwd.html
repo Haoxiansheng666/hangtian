@@ -1,0 +1,60 @@
+{include file="public/header" /}
+<style type="text/css">
+  html{
+    background-color:white;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform">
+    <div class="layui-form-item">
+      <label class="layui-form-label">账号<span class="reqcolor"></span></label>
+      <div class="layui-input-block">
+        <input type="text"  class="layui-input" lay-verify="required" value="{$data['ress']->admin_name}"  disabled>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">新密码<span class="reqcolor">*</span></label>
+      <div class="layui-input-block">
+        <input type="password" name="admin_password" lay-verify="required|admin_password" autocomplete="off" placeholder="" class="layui-input" >
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">确认密码<span class="reqcolor">*</span></label>
+      <div class="layui-input-block">
+        <input type="password" name="password2" lay-verify="required|password2" autocomplete="off" placeholder="" class="layui-input"  >
+      </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$data['ress']->id}" id='hidden-id'>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 自定义验证规则 */
+    form.verify({
+      admin_password: [/(.+){6,12}$/, '密码必须6到12位']
+      ,password2: [/(.+){6,12}$/, '密码必须6到12位']
+
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+      var url = "{:url('AdminUsers/editPwd')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>

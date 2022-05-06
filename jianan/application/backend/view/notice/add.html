@@ -1,0 +1,112 @@
+{include file="public/header" /}
+{include file="public/ueditor" /}
+<script>
+    $(function () {
+        var options = {
+            zIndex: 1,
+            initialFrameWidth: "100%", //初化宽度
+            initialFrameHeight: 600, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign'
+            , //允许的最大字符数 'fullscreen',
+            pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+            autoHeightEnabled: true
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("content");  //  指定 textarea 的  id 为 goods_content
+    })
+
+</script>
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  .input_img_inline{
+    float: none !important;
+    width: 100px !important;
+  }
+  .layui-upload-list{
+      display: inline-block;
+  }
+  .icon_view, .layui-upload-img {
+      width: 80px;
+      height: 80px;
+  }
+    .ware_id_2{
+        display: none;
+    }
+  </style>
+<form class="layui-form"  style="margin-top:30px;width:80%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+     <div class="layui-form-item">
+        <label class="layui-form-label">标题<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+          <input type="text" name="title" lay-verify="required" placeholder="" class="layui-input" value="{$data['title']?$data['title']:''}">
+        </div>
+     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">通知人员<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="radio" {if empty($data.department_id) } checked {/if} name="ware_id" title="全部人员" value="1" lay-filter="ware_id">
+            <input type="radio" {if !empty($data.department_id) } checked {/if} name="ware_id" title="部门" value="2" lay-filter="ware_id">
+        </div>
+    </div>
+    <div class="layui-form-item ware_id_2">
+        <label class="layui-form-label">通知部门</label>
+        <div class="layui-input-block">
+            <select id="department_id" name="department_id" disabled>
+                {foreach $department as $k => $v}
+                <option value="{$v.id}" {if !empty($data.department_id) && $data.department_id eq $v.id} selected {/if}>{$v.name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <textarea  name="content"  id="content" lay-verify="required">{$data['content']?$data['content']:''}</textarea>
+        </div>
+    </div>
+
+    <div id="question_limit" class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$data['id']?$data['id']:''}" id='hidden-id'>
+        <button id="save" class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    {if !empty($data.department_id) }
+    $("#department_id").removeAttr("disabled");
+    form.render('select');
+    $('.ware_id_2').show();
+    {/if}
+    form.on('radio(ware_id)', function(data){
+        let ware_id = data.value;
+        if (ware_id == 1){
+            $("#department_id").attr('disabled','true');
+            form.render('select');
+            $('.ware_id_2').hide();
+        }else{
+            $("#department_id").removeAttr("disabled");
+            form.render('select');
+            $('.ware_id_2').show();
+        }
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+        $('#save').attr('disabled','true');
+      var url = "{$url}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+</script>

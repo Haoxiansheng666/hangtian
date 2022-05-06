@@ -1,0 +1,122 @@
+page {
+  background-color: #f6f6f6;
+}
+.mySubject {
+  width: 690rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  margin: 28rpx auto;
+}
+.mySubject .mys_vi {
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  padding: 0rpx 29rpx;
+  position: relative;
+}
+.mySubject .mys_vi .mysv_lf image {
+  width: 29rpx;
+  height: 29rpx;
+}
+.mySubject .mys_vi .mysv_mid {
+  margin-left: 17rpx;
+  font-size: 30rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #333333;
+  line-height: 100rpx;
+}
+.mySubject .mys_vi .mysv_rg {
+  position: absolute;
+  right: 29rpx;
+}
+.mySubject .mys_vi .mysv_rg image {
+  width: 12rpx;
+  height: 20rpx;
+}
+.myDetails {
+  width: 690rpx;
+  height: 389rpx;
+  background-color: white;
+  border-radius: 16rpx;
+  margin: 28rpx auto;
+}
+.myDetails .md_box {
+  display: flex;
+  justify-content: space-between;
+  padding: 40rpx 35rpx 48rpx 34rpx;
+}
+.myDetails .md_head {
+  display: flex;
+}
+.myDetails .md_head .mdh_cent {
+  margin-left: 19rpx;
+}
+.myDetails .md_head .mdh_name {
+  font-size: 36rpx;
+  font-family: OPPOSans;
+  font-weight: bold;
+  color: #181818;
+  margin-top: 24rpx;
+}
+.myDetails .md_head image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.myDetails .md_img {
+  margin: auto 0;
+}
+.myDetails .md_img image {
+  width: 141rpx;
+  height: 50rpx;
+}
+.md_btm {
+  width: 619rpx;
+  height: 153rpx;
+  background-color: #f6f6f6;
+  margin: 0rpx auto;
+  border-radius: 10rpx;
+  margin-bottom: 48rpx !important;
+  display: flex;
+  position: relative;
+  bottom: 10rpx;
+}
+.md_btm .mdb_img {
+  border-radius: 45rpx;
+  margin: 0 21rpx 0 39rpx;
+}
+.md_btm .mdb_img image {
+  width: 106rpx;
+  height: 106rpx;
+  margin-top: 35rpx;
+}
+.md_btm .mdb_split {
+  width: 1rpx;
+  height: 87rpx;
+  border-left: 1rpx solid #6d4f47;
+  opacity: 0.1;
+  margin-top: 38rpx;
+}
+.md_btm .mdb_ds {
+  font-size: 20rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #666666;
+  margin-top: 11rpx;
+}
+.md_btm .mdb_name {
+  font-size: 32rpx;
+  font-family: OPPOSans;
+  font-weight: bold;
+  color: #333333;
+  margin-top: 38rpx;
+}
+.md_btm .mdb_le {
+  width: 50%;
+  display: flex;
+}
+.md_btm .mdb_rg {
+  width: 50%;
+  display: flex;
+}

@@ -1,0 +1,41 @@
+{include file="public/header" /}
+<script type="text/javascript" src="__STATICBACKEND__/map/js/MapType.js"></script>
+<script type="text/javascript" src="__STATICBACKEND__/map/js/MapGrid.js"></script>
+<link rel="stylesheet" href="__STATICBACKEND__/map/css/mapgrid.css">
+<style type="text/css">
+ html{
+    background-color:#fff;
+  }
+</style>
+<form class="layui-form"  style="margin:100px 300px;" id="addform" >
+    <div class="layui-form-item">
+      <label class="layui-form-label">
+        经纬度
+      </label>
+      <div class="layui-input-block">
+        <input type="text" name="long" class="layui-input" value="{$data['ress']['long']?$data['ress']['long']:''}" id="map"  placeholder="" >
+      </div>
+    </div>
+</form>
+<script type="text/javascript">
+   /**
+   * MapType.js 是地图类型百度 高德 
+   * 请在MapType.js里面把tMapKey方法里面的密钥换成自己的，目前属于测试密钥以防后期删除
+   * MapGrid.js 是调用方法
+   */
+    new MapGrid('#map',{
+    //地图类型 高端(gouldMap) 百度(baiduMap)
+    type : baiduMap,//gouldMap || baiduMap
+    /**
+     * [callback description]
+     * @param  {[type]}   lng [经度：]
+     * @param  {[type]}   lat [纬度：]
+     * @return {Function}     [description]
+     */
+    callback : function(lng,lat){
+      console.log(lng,lat)
+    }
+    
+  });
+</script>
+{include file="public/footer" /}

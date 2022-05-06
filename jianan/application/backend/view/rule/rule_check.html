@@ -1,0 +1,105 @@
+{include file="public/header" /}
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form class="layui-form" action="" id="search" onkeydown="if(event.keyCode==13){return false;}">
+          <div class="layui-form-item" >
+            <label class="layui-form-label"><span class="reqcolor">*</span>角色名称</label>
+            <div class="layui-input-block">
+              <input type="text" name="group_name" lay-verify="required" autocomplete="off" placeholder="" class="layui-input" value="{$data['group_name']?$data['group_name']:''}">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label"><span class="reqcolor">*</span>操作权限</label>
+            {foreach $rulelist as $vo}
+            <div class="layui-input-block" style="margin-top:20px; ">
+              <blockquote class="layui-elem-quote layui-text">
+              <input type="checkbox" value="{$vo.id}" name="rules[]"  lay-skin="primary" title="{$vo.title}" id="ck-{$vo.id}" {:in_array($vo['id'],$data['rules'])?'checked':''} lay-filter="rules">
+              </blockquote>
+              <?php  if(isset($vo['son'])){  ?>
+              {foreach $vo.son as $vson}
+              <input type="checkbox" name="rules[]" lay-skin="primary" title="{$vson.title}" value="{$vson.id}"  {:in_array($vson['id'],$data['rules'])?'checked':''} id="ck-{$vo.id}-{$vson.id}" >
+              <?php  if(isset($vson['son'])){  ?>
+                {foreach $vson.son as $v2on}
+                <input type="checkbox" name="rules[]" lay-skin="primary" title="{$v2on.title}" value="{$v2on.id}"  {:in_array($v2on['id'],$data['rules'])?'checked':''} id="ck-{$vo.id}-{$vson.id}-{$v2on.id}" >
+                {/foreach}
+                <?php  } ?>
+              {/foreach}
+               <?php  } ?>
+            </div>
+            {/foreach}
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label"><span class="reqcolor"></span>角色备注</label>
+            <div class="layui-input-block">
+              <textarea name="desc" placeholder="请输入内容" class="layui-textarea">{$data['desc']?$data['desc']:''}</textarea>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="status" value="1" title="启用"  {if condition="$data['status']==1"} checked {/if}>
+
+              <input type="radio" name="status" value="0" title="禁用" {if condition="$data['status']==0"} checked {/if}>
+            </div>
+          </div>
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+                <input  type="hidden" name='id' value="{$data['id']?$data['id']:''}" id='hidden-id'>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+  layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 自定义验证规则 */
+    form.verify({
+      admin_name: function(value){
+        if(value.length < 4){
+          return '登录账号至少得4个字符';
+        }
+      }
+      ,admin_password: [/(.+){6,12}$/, '密码必须6到12位']
+      ,password2: [/(.+){6,12}$/, '密码必须6到12位']
+    });
+    /* 监听提交 */
+    form.on('submit(component-form-demo1)', function(data){
+      var url = "{:url('rule/groupAdd')}";
+      var data =$("#search").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    form.on('checkbox(rules)', function(data){
+        var did1=data.elem.id;
+        var child = $(data.elem).parents('div').find('div input[type="checkbox"]');
+        child.each(function(index, item){
+          var did=item.id;
+          var str = "'"+did+"'";
+          var reg = RegExp(did1);
+          if(str.match(reg)){
+            item.checked = data.elem.checked;
+          }
+        });
+        form.render('checkbox');
+    });
+
+  });
+  </script>
+</body>
+</html>

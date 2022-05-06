@@ -1,0 +1,12 @@
+<view class="cfc_box">
+  <!-- <block wx:for="{{dataList}}" wx:key="unique"> -->
+    <view class="subject">证书名称: {{DetailsLs.name}}</view>
+    <view class="subject">姓名: {{DetailsLs.name}}</view>
+    <view class="subject">证书编号: {{DetailsLs.code}}</view>
+    <view class="subject">专业: {{DetailsLs.subject}}</view>
+    <view class="subject">发证时间: {{DetailsLs.start_time}}</view>
+    <view class="subject">到期时间: {{DetailsLs.end_time}}</view>
+    <view class="subject">发证机构: {{DetailsLs.organization}}</view>
+    <!-- <view class="subject">证书名称: {{item.ds}}</view> -->
+  <!-- </block> -->
+</view>

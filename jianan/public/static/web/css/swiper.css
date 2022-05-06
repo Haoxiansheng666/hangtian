@@ -1,0 +1,52 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+html,body{
+	width: 100%;
+}
+.swiper{
+	width: 100%;
+}
+.swis{
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+}
+.swis>ul{
+	list-style: none;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+.swis>ul>li{
+	width: 100%;
+	box-sizing: border-box;
+	float: left;
+}
+.swis>ul>li>img{
+	width: 100%;
+}
+
+.swis_span{
+	width: 100%;
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 40px;
+	left: 0;
+	text-align: center;
+	z-index: 10;
+}
+.swis_span>span{
+	display: inline-block;
+	width: 80px;
+	height: 0;
+	border-bottom: 2px solid #fff;
+	
+}
+.swis_span>span:nth-child(n+2){
+	margin-left: 10px;
+}
+.swis_span>span:first-child{
+	border-top: 2px solid #fff;
+}

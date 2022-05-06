@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/my",
+    "pages/login/login"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "谊和顺",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1684FC",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/t1.png",
+        "selectedIconPath": "/static/st1.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "/static/t2.png",
+        "selectedIconPath": "/static/st2.png"
+      }
+    ]
+  },
+  "subPackages": [
+    {
+      "root": "homePage",
+      "pages": [
+        "certificate/certificate"
+      ]
+    },
+    {
+      "root": "functionalArea",
+      "pages": [
+        "myDetails/myDetails",
+        "company/company",
+        "corporatePerformance/corporatePerformance",
+        "corporatePerformanceDetails/corporatePerformanceDetails",
+        "QualificationCriteria/QualificationCriteria",
+        "QualificationCriteriaDetails/QualificationCriteriaDetails",
+        "QualificationManagement/QualificationManagement",
+        "QualificationManagementDetails/QualificationManagementDetails",
+        "certificategl/certificategl",
+        "permit/permit",
+        "pcAddress/pcAddress",
+        "expire/expire"
+      ]
+    }
+  ],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

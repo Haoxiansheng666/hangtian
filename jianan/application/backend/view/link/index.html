@@ -1,0 +1,146 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+  .layui-card-header.layuiadmin-card-header-auto {
+      padding-top: 12px;
+      padding-bottom: 8px;
+  }
+  .layui-table-cell{
+      height:40px;
+      line-height: 40px;
+  }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+      </div>
+      <div class="layui-card-body ">
+        <div style="margin-bottom: 8px;" class="search">
+          <button class="layui-btn layui-btn-danger" data-type="getCheckData" ><i class="layui-icon">&#xe640;</i>删除</button>
+          
+          <button class="layui-btn" data-type="add_data"><i class="layui-icon">&#xe654;</i>添加</button>
+        </div>
+        <table id="layui-table" lay-filter="layui-table-tool"></table>
+        <script type="text/html" id="imgTpl">
+          <a href="{{d.image?d.image:'/static/backend/other/no_img.png'}}" target="_blank" title="查看原图"><img src="{{d.image?d.image:'/static/backend/other/no_img.png'}}" style="width:40px;height:40px;"></a>
+        </script>
+        <script type="text/html" id="barTpl">
+          <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+        </script>
+      </div>
+    </div>
+  </div> 
+  <script>
+    layui.use('table', function(){
+        var table = layui.table
+        , form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#layui-table'
+            ,url: "{:Url('link/getData')}" //数据接口
+            // ,width: 892
+            //,height: 500
+            ,height: 'full-180' //高度最大化减去差值
+            ,page: { 
+              layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+              ,curr: 1 //设定初始在第 5 页
+              ,groups: 5 //只显示 1 个连续页码
+              ,first: false //不显示首页
+              ,last: false //不显示尾页
+            }
+            ,limit:15
+            ,limits:[5,12,15,30,45,60,75,90]
+            ,cols: [[ //表头
+                {type:'checkbox',fixed: 'left'}
+                ,{field: 'id', title: '编号', sort: true,width:80}
+                ,{field: 'title', title: '标题', sort: true,}
+                ,{field: 'url', title: '链接', sort: true,}
+                ,{field: 'ord', title: '排序', sort: true,}
+                ,{field: 'add_time', title: '创建时间', sort: true,}
+                ,{title: '操作', templet: '#barTpl'}
+            ]]
+            ,id: 'tablereload'
+        });
+        var $ = layui.$, active = {
+          getCheckData: function(){ //获取选中数据
+            var checkStatus = table.checkStatus('tablereload')
+            ,data = checkStatus.data;
+            var delList=[];
+            data.forEach(function(n,i){
+                  delList.push(n.id);
+             });
+            if(delList==''){
+              layer.msg('未选择数据！',{icon: 2,time:2000});
+              return false;
+            };
+            layer.confirm('确认要删除吗？删除就无法恢复',function(){
+                var data1 = {id: delList};
+                var url = "{:Url('link/delData')}";
+                jqueryAjax('POST',url,data1,successReload); 
+            });
+          },
+          reload: function(){
+              //执行重载
+              table.reload('tablereload', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      title: $('input[name="title"]').val(),
+                      cate_id: $("#selectcateid option:selected").val(),
+                      status:$("#selectstatus option:selected").val(),
+                      auid: $("#selectauid option:selected").val(),
+                  }
+              });
+          },
+          add_data:function(){
+              var url = "{:url('link/add')}";
+              x_admin_show('添加友情链接',url,1100,800);
+          },
+        };
+        $('.search .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听状态操作
+        form.on('switch(statusControl)', function(obj){
+            var id = obj.elem.dataset.id;
+            var value = obj.value;
+            var url = "{:Url('link/changStatus')}";
+            var data = {id: id};
+            jqueryAjax('POST',url,data,successBase);
+        });
+
+        //监听工具条
+        table.on('tool(layui-table-tool)', function(obj){
+            iss = $(this);
+            if(obj.event === 'edit'){
+                var id = obj.data.id
+                var url = "{:Url('link/edit')}" + '?id=' + id;
+                x_admin_show('编辑友情链接详情',url,1100,800);
+            }else if(obj.event === 'delete'){
+                layer.confirm('确认要删除吗？删除就无法恢复了！',function(){
+                    var data = {id: obj.data.id};
+                    var url = "{:Url('link/delData')}";
+                    jqueryAjax('POST',url,data,successReload);
+                });
+            }else if(obj.event === 'tuji'){
+                var id = obj.data.id
+                var url = "{:Url('link/tuji')}" + '?id=' + id;
+                location.href=url;
+            }else if(obj.event === 'see'){
+                var id = obj.data.id
+                var url = "{:Url('web/index/details')}" + '?id=' + id;
+                window.open(url);
+            }
+
+        });
+    });
+  </script>
+</body>
+</html>
+

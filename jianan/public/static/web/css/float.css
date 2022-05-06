@@ -1,0 +1,32 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body,html{
+	width: 100%;
+	position: relative;
+}
+.floats>ul{
+		position: fixed;
+		top: 320px;
+		right: 0;
+		color: #FFFFFF;
+		text-align: center;
+		/* line-height: 72px; */
+		list-style: none;
+		background-color: #b6321b;
+		box-sizing: border-box;
+		padding: 0;
+		z-index: 12;
+	}
+	.floats>ul>li{
+		width: 92px;
+		height: 92px;
+		box-sizing: border-box;
+		margin: 0;
+		padding-top: 16px;
+	}
+	.floats>ul>li:hover{
+		background-color: #9b1a04;
+	}
+	

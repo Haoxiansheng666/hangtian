@@ -1,0 +1,82 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2">{:__('Detail_id')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-detail_id" data-rule="required" readonly type="text" value="{$row.detail_id|htmlentities}">-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" class="form-control" type="text" readonly value="{$row.name|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Is_open')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select  id="c-is_open" class="form-control selectpicker" disabled>
+                {foreach name="isOpenList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.is_open"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Install_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-install_time" class="form-control datetimepicker" readonly data-date-format="YYYY-MM-DD" data-use-current="true" name="row[install_time]" type="text" value="{:$row.install_time?datetime($row.install_time):''}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-type" class="form-control" type="text" readonly value="{$row.type|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Model')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-model" class="form-control" type="text" readonly value="{$row.model|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Displace')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-displace" class="form-control" type="text" readonly value="{$row.displace|htmlentities}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Width')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-width" class="form-control" type="text" readonly value="长:{$row.width['length']} &nbsp;&nbsp;&nbsp; 宽：{$row.width['width']}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Length')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-length" class="form-control" type="text" readonly value="{$row.length['length']} &nbsp;&nbsp;&nbsp; 宽：{$row.length['width']}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Detail')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {foreach $row.detail as $key=>$val}
+                 名字:{$val.name} &nbsp;&nbsp;&nbsp; 数量:{$val.number} &nbsp;&nbsp;&nbsp; 功率:{$val.power} &nbsp;&nbsp;&nbsp; 备注:{$val.remark} <br/>
+            {/foreach}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Create_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-create_time" class="form-control datetimepicker" readonly data-date-format="YYYY-MM-DD HH:mm" data-use-current="true" type="text" value="{:$row.create_time?datetime($row.create_time):''}">
+        </div>
+    </div>
+<!--    <div class="form-group layer-footer">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"></label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>-->
+<!--            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>-->
+<!--        </div>-->
+<!--    </div>-->
+</form>

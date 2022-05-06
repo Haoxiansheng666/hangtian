@@ -1,0 +1,93 @@
+{include file="public/header" /}
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">个人中心</div>
+          <form class="layui-form" action="" id="addform">
+          <div class="layui-card-body" pad15>
+            <div class="layui-form" lay-filter="">
+              <div class="layui-form-item">
+                <label class="layui-form-label">我的部门</label>
+                <div class="layui-input-inline">
+                  <input type="text"   class="layui-input" value="{$group['group_name']?$group['group_name']:'未定义'}" disabled>
+                </div>
+                <div class="layui-form-mid layui-word-aux">当前部门不可更改</div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">登录账号</label>
+                <div class="layui-input-inline">
+                  <input type="text"  value="{$data['admin_name']}" readonly class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入</div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="real_name" value="{$data['real_name']?$data['real_name']:'未定义'}" lay-verify="nickname" autocomplete="off"  class="layui-input">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                  <input type="radio" name="sex" value="1" title="男"  {if condition="$data['sex']=='1'"} checked {/if}>
+                  <input type="radio" name="sex" value="2" title="女" {if condition="$data['sex']=='2'"} checked {/if} >
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">电话</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="mobile"  autocomplete="on"  class="layui-input" value="{$data['mobile']?$data['mobile']:''}">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="email"  autocomplete="on"  class="layui-input" value="{$data['email']?$data['email']:''}">
+                </div>
+              </div>
+              <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                  <textarea name="more" placeholder="请输入内容" class="layui-textarea">{$data['more']}</textarea>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="addaction">确认修改</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+  layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 自定义验证规则 */
+    form.verify({
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+      var url = "{:url('Index/auinfo')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successReload);
+      return false;
+    });
+  });
+  </script>
+</body>
+</html>

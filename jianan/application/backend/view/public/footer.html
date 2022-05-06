@@ -1,0 +1,31 @@
+
+<script>
+  layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index', //主入口模块
+    bioarea: 'bioarea/bioarea' // 省市区三级联动
+  }).use(['index', 'form', 'laydate','bioarea'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,bioarea = layui.bioarea
+    ,form = layui.form;
+
+      //隐藏菜单
+    //   var bl = $("#LAY_app_flexible").hasClass("layui-icon-shrink-right");
+    //   if (bl) {
+    //       admin.sideFlexible('null');
+    //   }
+    //   $(document).on('mouseenter','.layui-side-scroll',function (){
+    //       admin.sideFlexible('spread');
+    //   })
+    //   $(document).on('mouseleave','.layui-side-scroll',function (){
+    //       admin.sideFlexible('null');
+    //   })
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+{include file="public/header" /}
+<script src="__STATICBACKEND__/jscolor/jscolor.js"></script>
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">拒绝原因</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="feedback" id="feedback"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input type="hidden" name='id' value="{$id}" id='hidden-id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,upload = layui.upload
+    ,form = layui.form;
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#action_train_time' //指定元素
+    });
+    laydate.render({
+        elem: '#recheck_time' //指定元素
+    });
+    //执行实例
+    var uploadInst = upload.render({
+        elem: '#pay_proof' //绑定元素
+        , field: 'img'
+        ,url: "{:url('upload/layuiImgUpload')}" //上传接口
+        , before: function (obj) {
+            //预读本地文件示例，不支持ie8
+            obj.preview(function (index, file, result) {
+                $('#preview').attr('src', result); //图片链接（base64）
+                console.log(result);
+            });
+        }
+        ,done: function(res){
+            console.log(res);
+            //如果上传失败
+            if (res.code > 0) {
+                return layer.msg('上传失败');
+            } else {
+                var path = res.data;
+                $('input[name="pay_proof"]').val(path);
+            }
+        }
+        ,error: function(){
+            //请求异常回调
+            $('#preview').attr('src', '')
+            layer.alert('主图大小不能超过300k，请重新选择!');
+        }
+    });
+    /* 自定义验证规则 */
+    form.verify({
+     
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+      var url = "{:url('GradeCheck/refuse')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>
+<script>
+    $(document).ready( function() {
+      
+            $('.demo').each( function() {
+                //
+                // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                //
+                //  $(selector).minicolors();
+                //
+                // The way I've done it below is just for the demo, so don't get confused 
+                // by it. Also, data- attributes aren't supported at this time. Again, 
+                // they're only used for the purposes of this demo.
+                //
+        $(this).minicolors({
+          control: $(this).attr('data-control') || 'hue',
+          defaultValue: $(this).attr('data-defaultValue') || '',
+          inline: $(this).attr('data-inline') === 'true',
+          letterCase: $(this).attr('data-letterCase') || 'lowercase',
+          opacity: $(this).attr('data-opacity'),
+          position: $(this).attr('data-position') || 'bottom left',
+          change: function(hex, opacity) {
+            var log;
+            try {
+              log = hex ? hex : 'transparent';
+              if( opacity ) log += ', ' + opacity;
+              console.log(log);
+            } catch(e) {}
+          },
+          theme: 'default'
+        });
+                
+            });
+      
+    });
+  </script>

@@ -1,0 +1,55 @@
+<view class="split"></view>
+<view class="log">
+  <image src="/static/image/22.png"></image>
+</view>
+<view class="bf">
+  <view class="brief">简介:</view>
+  <view class="brief_ds">
+    {{myDetail.myDetail}}
+    <!-- <text class="bfd_ep">查看更多>></text> -->
+  </view>
+</view>
+<view class="br_spilit"></view>
+<!-- 信息 -->
+<view class="ChangeCent">
+  <view class="cc_name">公司名称</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.company}}" />
+  </view>
+  <view class="cc_name">统一社会信用代码</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.code}}" />
+  </view>
+  <view class="cc_name">企业注册地</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.address	}}" />
+  </view>
+  <view class="cc_name">经济类型</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.type == 1 ?'有限责任公司':''}}" />
+  </view>
+  <view class="cc_name">成立日期</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.start_time}}" />
+  </view>
+  <view class="cc_name">企业营业地址</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.addr}}" />
+  </view>
+  <view class="cc_name">企业营业地址邮编</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.postcode}}" />
+  </view>
+  <view class="cc_name">企业法定代表人</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.legal}}" />
+  </view>
+  <view class="cc_name">法定代表人职务</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.position}}" />
+  </view>
+  <view class="cc_name">企业网址</view>
+  <view class="cc_ipt">
+    <input disabled type="text" placeholder="{{myDetail.url}}" />
+  </view>
+</view>

@@ -1,0 +1,41 @@
+{include file="public/header" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+      <label class="layui-form-label">支付方式<span class="reqcolor">*</span></label>
+      <div class="layui-input-block">
+        <input type="text" name="title"  class="layui-input" lay-verify="required" value="{$data['ress']['title']|default=''}" >
+      </div>
+    </div>
+
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$data['ress']['id']?$data['ress']['id']:''}" id='hidden-id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    /* 监听提交 */
+    form.on('submit(addaction)', function(){
+      var url = "{:url('ProceedsType/add')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>

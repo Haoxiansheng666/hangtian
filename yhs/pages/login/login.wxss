@@ -1,0 +1,181 @@
+.login {
+  margin-left: 28rpx;
+}
+
+.lg1 {
+  font-size: 44rpx;
+  font-family: OPPOSans;
+  font-weight: bold;
+  color: #181818;
+  margin-top: 165rpx;
+}
+
+.lg2 {
+  font-size: 24rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #666666;
+  margin-top: 10rpx;
+}
+
+.yph {
+  padding-top: 0rpx;
+}
+
+.y_quit image {
+  width: 51rpx;
+  height: 35rpx;
+  margin-top: 88rpx;
+}
+
+.lg3 {
+  margin-top: 96rpx;
+  font-size: 32rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #333333;
+}
+
+.lg4 {
+  width: 690rpx;
+  height: 80rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #E1E1E1;
+  border-radius: 10rpx;
+  margin-top: 19rpx;
+}
+
+.lg4 input {
+  width: 650rpx;
+  font-size: 24rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #999999;
+  margin: 15rpx 0 0 20rpx;
+}
+
+.lg5 {
+  font-size: 32rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #333333;
+  margin-top: 48rpx;
+}
+
+.lg6 {
+  width: 690rpx;
+  height: 80rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #E1E1E1;
+  border-radius: 10rpx;
+  margin-top: 19rpx;
+  position: relative;
+}
+
+.lg6 input {
+  font-size: 24rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #999999;
+  margin: 15rpx 0 0 20rpx;
+  width: 450rpx;
+}
+
+.lg6 view {
+  width: 145rpx !important;
+  height: 50rpx !important;
+  background: #f0f0f0;
+  border-radius: 8rpx;
+  position: absolute;
+  font-size: 22rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #333333;
+  text-align: center;
+  line-height: 50rpx;
+  right: 30rpx;
+  top: 15rpx;
+}
+
+.lg7 {
+  width: 690rpx !important;
+  height: 80rpx !important;
+  background: #1684FC;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  margin-top: 157rpx;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 80rpx;
+}
+
+.hqsq image {
+  width: 750rpx;
+  height: 1650rpx;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -10;
+}
+
+.logo {
+  font-size: 36rpx;
+  font-family: Source Han Sans CN;
+  font-weight: 500;
+  color: #181818;
+  margin-top: 88rpx;
+  margin-left: 34rpx;
+}
+.logo image{
+  width: 226rpx;
+  height: 36rpx;
+  position: relative;
+  z-index: 10;
+}
+
+.HQ1 image {
+  width: 183rpx;
+  height: 183rpx;
+  position: relative;
+  z-index: 10;
+}
+
+.HQ1 {
+  width: 183rpx;
+  height: 183rpx;
+  border-radius: 91rpx;
+  line-height: 183rpx;
+  margin-top: 398rpx !important;
+  margin: auto;
+  position: relative;
+}
+
+.HQ2 {
+  font-size: 40rpx;
+  font-family: OPPOSans;
+  font-weight: bold;
+  color: #041426;
+  margin-top: 46rpx;
+  text-align: center;
+}
+
+.HQ2 image {
+  width: 242rpx;
+  height: 61rpx;
+  position: relative;
+  z-index: 10;
+}
+
+.hqsq button {
+  width: 690rpx !important;
+  height: 80rpx !important;
+  background: #1684FC;
+  font-size: 28rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #FFFFFF;
+  border-radius: 40rpx;
+  margin-top: 281rpx;
+}

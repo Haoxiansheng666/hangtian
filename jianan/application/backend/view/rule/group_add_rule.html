@@ -1,0 +1,87 @@
+{include file="public/header" /}
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form class="layui-form" action="" id="search" onkeydown="if(event.keyCode==13){return false;}">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="reqcolor">*</span>操作权限</label>
+                {foreach $rulelist as $vo}
+                <div class="layui-input-block" style="margin-top:20px; ">
+                    <blockquote class="layui-elem-quote layui-text">
+                        <input type="checkbox" value="{$vo.id}" name="rules[]"  lay-skin="primary" title="{$vo.title}" id="ck-{$vo.id}" {:in_array($vo['id'],$data['rules'])?'checked':''} lay-filter="rules">
+                    </blockquote>
+                    <?php  if(isset($vo['son'])){  ?>
+                    {foreach $vo.son as $vson}
+                    <input type="checkbox" name="rules[]" lay-skin="primary" title="|-{$vson.title}" value="{$vson.id}"  {:in_array($vson['id'],$data['rules'])?'checked':''} id="ck-{$vo.id}-{$vson.id}" >
+                    <br>
+                    {if !empty($vson.son)}
+                    {foreach $vson.son as $vson1}
+                    <input type="checkbox" name="rules[]" lay-skin="primary" title="|---{$vson1.title}" value="{$vson1.id}"  {:in_array($vson1['id'],$data['rules'])?'checked':''} id="ck-{$vo.id}-{$vson.id}-{$vson1.id}" >
+                    {/foreach}
+                    <br>
+                    {/if}
+                    {/foreach}
+                    <?php  } ?>
+                </div>
+                {/foreach}
+            </div>
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+                <input  type="hidden" name='id' value="{$data['id']?$data['id']:''}" id='hidden-id'>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+  layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 自定义验证规则 */
+    form.verify({
+      admin_name: function(value){
+        if(value.length < 4){
+          return '登录账号至少得4个字符';
+        }
+      }
+      ,admin_password: [/(.+){6,12}$/, '密码必须6到12位']
+      ,password2: [/(.+){6,12}$/, '密码必须6到12位']
+    });
+    /* 监听提交 */
+    form.on('submit(component-form-demo1)', function(data){
+      var url = "{:url('rule/groupAddRule')}";
+      var data =$("#search").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    form.on('checkbox(rules)', function(data){
+        var did1=data.elem.id;
+        var child = $(data.elem).parents('div').find('div input[type="checkbox"]');
+        child.each(function(index, item){
+          var did=item.id;
+          var str = "'"+did+"'";
+          var reg = RegExp(did1);
+          if(str.match(reg)){
+            item.checked = data.elem.checked;
+          }
+        });
+        form.render('checkbox');
+    });
+
+  });
+  </script>
+</body>
+</html>

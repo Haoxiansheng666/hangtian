@@ -1,0 +1,279 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+  .layui-card-header.layuiadmin-card-header-auto {
+      padding-top: 12px;
+      padding-bottom: 8px;
+  }
+  .layui-table-cell{
+      height:40px;
+      line-height: 40px;
+  }
+  .layui-tab{
+    margin: 10px 15px;
+  }
+    .statistics_card{
+        text-align: center;
+        margin: 69px;
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div class="layui-tab layui-tab-card" style="background-color: white">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md1 statistics_card">
+            <div class="layui-panel">
+                <div style="padding: 10px;" >入库总数量</div>
+                <div style="padding: 10px;" >{$load_total_num}</div>
+            </div>
+        </div>
+        <div class="layui-col-md1 statistics_card">
+            <div class="layui-panel">
+                <div style="padding: 10px;" >入库总金额</div>
+                <div style="padding: 10px;" >{$load_total_price}</div>
+            </div>
+        </div>
+        <div class="layui-col-md1 statistics_card">
+            <div class="layui-panel">
+                <div style="padding: 10px;" >出库总数量</div>
+                <div style="padding: 10px;" >{$loss_total_num}</div>
+            </div>
+        </div>
+        <div class="layui-col-md1 statistics_card">
+            <div class="layui-panel">
+                <div style="padding: 10px;" >出库总金额</div>
+                <div style="padding: 10px;" >{$loss_total_price}</div>
+            </div>
+        </div>
+        <div class="layui-col-md1 statistics_card">
+            <div class="layui-panel">
+                <div style="padding: 10px;" >报废总数量</div>
+                <div style="padding: 10px;" >{$scrap_total_num}</div>
+            </div>
+        </div>
+        <div class="layui-col-md1 statistics_card">
+            <div class="layui-panel">
+                <div style="padding: 10px;" >报废总金额</div>
+                <div style="padding: 10px;" >{$scrap_total_price}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body ">
+          <div class="layui-form layui-card-header layuiadmin-card-header-auto" >
+              <div class="layui-form-item search" >
+                  <div class="layui-input-inline">
+                      <input type="text" name="name" placeholder="名称" autocomplete="off" class="layui-input">
+                  </div>
+                  <div class="layui-input-inline" style="width:100px;">
+                      <select name="type" lay-search="" id="type">
+                          <option value="">货物类型</option>
+                          <option value="1">固定资产</option>
+                          <option value="2">损耗品</option>
+                      </select>
+                  </div>
+
+                  <div class="layui-inline">
+                      <button class="layui-btn  layui-btn-normal " data-type="reload">
+                          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          <div style="margin-bottom: 8px;" class="search">
+              <button id="rk" class="layui-btn" data-type="rk" style="">入库</button>
+              <button id="ck" class="layui-btn" data-type="ck" style="">出库</button>
+              <button id="bf" class="layui-btn" data-type="bf" style="">报废</button>
+          </div>
+        <table id="layui-table" lay-filter="layui-table-tool"></table>
+        <script type="text/html" id="barTpl">
+          <a class="layui-btn layui-btn-xs" lay-event="apply_remove">申请出库</a>
+          <a class="layui-btn layui-btn-xs" lay-event="remove">出库</a>
+          <a class="layui-btn layui-btn-xs" lay-event="scrap">报废</a>
+          <a class="layui-btn layui-btn-xs" lay-event="stockpile">增加库存</a>
+          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+        </script>
+          <script type="text/html" id="adminTpl">
+              {{ d.admin.real_name }}
+          </script>
+          <script type="text/html" id="adminCheckTpl">
+              {{ d.check_admin.real_name }}
+          </script>
+          <script type="text/html" id="name1Tpl">
+              {{ d.goods.name }}
+          </script>
+          <script type="text/html" id="numTpl">
+              {{ d.num }}{{ d.unit }}
+          </script>
+          <script type="text/html" id="priceTpl">
+              {{ d.price }}元/{{ d.unit }}
+          </script>
+          <script type="text/html" id="totalPriceTpl">
+              {{ d.price * d.num }}元
+          </script>
+          <script type="text/html" id="num1Tpl">
+              {{ d.num }}{{ d.goods.unit }}
+          </script>
+          <script type="text/html" id="price1Tpl">
+              {{ d.price }}元/{{ d.goods.unit }}
+          </script>
+          <script type="text/html" id="totalPrice1Tpl">
+              {{ d.goods.price * d.num }}元
+          </script>
+      </div>
+    </div>
+  </div>
+  <script>
+    layui.use(['table','form','element','jquery'], function(){
+        var table = layui.table
+        , element = layui.element
+        , jquery = layui.jquery
+        , form = layui.form;
+        element.on('tab(ware)', function(data){
+            let ware_id = this.getAttribute('lay-id');
+            tableClick(ware_id);
+        });
+        tableClick(1);
+        function tableClick(action){
+            var where = {action:action,ware_id:{$ware_id}};
+            // 入库
+            if (action == 1){
+                table.render({
+                    elem: '#layui-table'
+                    ,url: "{:Url('Warehouse/getStatisticsData')}" //数据接口
+                    ,where: where
+                    ,height: 'full-180' //高度最大化减去差值
+                    ,page: {
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        ,curr: 1 //设定初始在第 5 页
+                        ,groups: 5 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页
+                    }
+                    ,limit:15
+                    ,limits:[5,12,15,30,45,60,75,90]
+                    ,cols: [[ //表头
+                        // {type:'checkbox',fixed: 'left'},
+                        {field: 'id', title: '编号',width:60}
+                        ,{field: 'name', title: '名称',}
+                        ,{title: '数量', templet: '#numTpl'}
+                        ,{title: '价格', templet: '#priceTpl'}
+                        ,{title: '总金额', templet: '#totalPriceTpl'}
+                        ,{field: 'type_text', title: '货物类型'}
+                        ,{field: 'create_time_text', title: '入库时间',width:180}
+                        ,{title: '入库人', templet: '#adminTpl'}
+                    ]]
+                    ,id: 'tablereload'
+                });
+                jquery("#rk").css({"background-color":'#FF5722'});
+                jquery("#ck").css({"background-color":''});
+                jquery("#bf").css({"background-color":''});
+            }
+            // 出库
+            else if(action == 2){
+                table.render({
+                    elem: '#layui-table'
+                    ,url: "{:Url('Warehouse/getStatisticsData')}" //数据接口
+                    ,where: where
+                    ,height: 'full-180' //高度最大化减去差值
+                    ,page: {
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        ,curr: 1 //设定初始在第 5 页
+                        ,groups: 5 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页
+                    }
+                    ,limit:15
+                    ,limits:[5,12,15,30,45,60,75,90]
+                    ,cols: [[ //表头
+                        // {type:'checkbox',fixed: 'left'},
+                        {field: 'id', title: '编号',width:60}
+                        ,{title: '名称', templet: '#name1Tpl'}
+                        ,{title: '数量', templet: '#num1Tpl'}
+                        ,{title: '价格', templet: '#price1Tpl'}
+                        ,{title: '总金额', templet: '#totalPrice1Tpl'}
+                        ,{field: 'type_text', title: '货物类型'}
+                        ,{field: 'create_time_text', title: '出库时间',width:180}
+                        ,{field: 'check_time_text', title: '审核时间',width:180}
+                        ,{title: '出库申请人', templet: '#adminTpl'}
+                        ,{title: '出库审核人', templet: '#adminCheckTpl'}
+                    ]]
+                    ,id: 'tablereload'
+                });
+                jquery("#ck").css({"background-color":'#FF5722'});
+                jquery("#rk").css({"background-color":''});
+                jquery("#bf").css({"background-color":''});
+            }
+            // 报废
+            else if(action == 3){
+                table.render({
+                    elem: '#layui-table'
+                    ,url: "{:Url('Warehouse/getStatisticsData')}" //数据接口
+                    ,where: where
+                    ,height: 'full-180' //高度最大化减去差值
+                    ,page: {
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        ,curr: 1 //设定初始在第 5 页
+                        ,groups: 5 //只显示 1 个连续页码
+                        ,first: false //不显示首页
+                        ,last: false //不显示尾页
+                    }
+                    ,limit:15
+                    ,limits:[5,12,15,30,45,60,75,90]
+                    ,cols: [[ //表头
+                        // {type:'checkbox',fixed: 'left'},
+                        {field: 'id', title: '编号',width:60}
+                        ,{title: '名称', templet: '#name1Tpl'}
+                        ,{title: '数量', templet: '#num1Tpl'}
+                        ,{title: '价格', templet: '#price1Tpl'}
+                        ,{title: '总金额', templet: '#totalPrice1Tpl'}
+                        ,{field: 'type_text', title: '货物类型'}
+                        ,{field: 'create_time_text', title: '报废时间',width:180}
+                        ,{title: '报废操作人', templet: '#adminTpl'}
+                        // ,{title: '操作', templet: '#barTpl',width:300}
+                    ]]
+                    ,id: 'tablereload'
+                });
+                jquery("#bf").css({"background-color":'#FF5722'});
+                jquery("#ck").css({"background-color":''});
+                jquery("#rk").css({"background-color":''});
+            }
+
+        }
+        var $ = layui.$, active = {
+          reload: function(){
+              //执行重载
+              table.reload('tablereload', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      name: $('input[name="name"]').val(),
+                      type: $("#type option:selected").val(),
+                  }
+              });
+          },
+            rk:function () {
+                tableClick(1);
+            },
+            ck:function () {
+                tableClick(2);
+            },
+            bf:function () {
+                tableClick(3);
+            },
+        };
+        $('.search .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+  </script>
+</body>
+</html>
+

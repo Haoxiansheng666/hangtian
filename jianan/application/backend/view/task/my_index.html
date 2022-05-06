@@ -1,0 +1,49 @@
+{include file="public/header" /}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style type="text/css">
+  html{
+    background: #fff;
+  }
+  .demoTable{
+    text-align: center;
+  }
+</style>
+
+<div class="layui-form">
+  <table class="layui-table">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>标题</th>
+        <th>审核状态</th>
+        <th>发布时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {foreach $data as $v}
+      <tr>
+        <td>{$v.id}</td>
+        <td>{$v.title}</td>
+        <td>{$v.status_text}</td>
+        <td>{$v.add_time}</td>
+        <td>
+            {if in_array('164',$rule_ids)}
+          <a onclick="edit_data('查看',{$v.id})" class="layui-btn layui-btn-xs">查看</a>
+            {/if}
+        </td>
+      </tr>
+      {/foreach}
+    </tbody>
+  </table>
+</div>
+<div class="pagelist">
+  {$page}
+</div>
+<script>
+    function edit_data(title,id){
+        var url = "{:url('Task/detail')}"+ '?id=' + id;
+        x_admin_show(title,url,1100,800);
+    }
+</script>
+{include file="public/footer" /}

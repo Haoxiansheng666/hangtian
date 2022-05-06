@@ -1,0 +1,112 @@
+.navSub {
+  width: 33.33%;
+  text-align: center;
+  margin: auto;
+  font-size: 28rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #333333;
+}
+
+.nav_max {
+  background-color: white;
+}
+
+.navSub_split_ {
+  opacity: 0;
+}
+
+.Select_ {
+  font-size: 32rpx !important;
+  font-weight: bold !important;
+  color: #181818 !important;
+}
+
+.navSub_split {
+  margin: auto;
+  width: 29rpx;
+  height: 7rpx;
+  background: #1684FC;
+  margin-top: 13rpx;
+}
+
+.nav_box {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.subject {
+  width: 690rpx;
+  height: 389rpx;
+  background-color: white;
+  margin: 30rpx auto;
+  border-radius: 16rpx;
+}
+
+page {
+  background-color: #f6f6f6;
+}
+
+.sb_head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sbh_l {
+  margin-left: 39rpx;
+  margin-top: 42rpx;
+  font-size: 30rpx;
+  font-family: OPPOSans;
+  font-weight: bold;
+  color: #181818;
+}
+
+.sbh_r {
+  margin-top: 29rpx;
+  margin-right: 35rpx;
+  width: 141rpx;
+  height: 50rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #E83B31;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  line-height: 50rpx;
+  text-align: center;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #E83B31;
+}
+
+
+.sb_cent {
+  width: 615rpx;
+  background: #F9F9F9;
+  margin: 27rpx auto;
+  border-radius: 10rpx;
+  padding: 10rpx 0;
+}
+
+.sbc_c {
+  display: flex;
+  justify-content: space-between;
+  height: 55rpx;
+  line-height: 55rpx;
+  align-items: center
+}
+
+.sbcc_r {
+  font-size: 26rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #181818;
+  margin-right: 31rpx;
+}
+
+.sbcc_l {
+  font-size: 26rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #666666;
+  margin-left: 31rpx;
+}

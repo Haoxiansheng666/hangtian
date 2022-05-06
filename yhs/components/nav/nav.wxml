@@ -1,0 +1,12 @@
+<view class="nav_max">
+    <view class="nav_box">
+        <block wx:for="{{nvaList}}" wx:key="unique">
+            <view class="navSub wx:if:'{{SelectNavID == item.id ? 'Select_' : ''}}' " bindtap="SelectNav" data-id='{{item.id}}'>{{item.title}}</view>
+        </block>
+    </view>
+    <view class="nav_box">
+        <block wx:for="{{nvaList}}" wx:key="unique">
+            <view class="navSub_split  wx:if:'{{SelectNavID == item.id ? '' : 'navSub_split_'}}'"></view>
+        </block>
+    </view>
+</view>

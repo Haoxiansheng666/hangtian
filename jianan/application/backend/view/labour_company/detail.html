@@ -1,0 +1,145 @@
+{include file="public/header" /}
+
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+</style>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">企业信息</li>
+        <li>回款记录</li>
+        <li>退款记录</li>
+    </ul>
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">企业名称<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$user['name']?$user['name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系人姓名</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="contact_name" type="text" value="{$user['contact_name']?$user['contact_name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系人电话</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="contact_mobile" type="text" value="{$user['contact_mobile']?$user['contact_mobile']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">业务员</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="contact_mobile" type="text" value="{$user['salesman']['real_name']?$user['salesman']['real_name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">需求人数<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="people_num" type="text" value="{$user['people_num']?$user['people_num']:'0'}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐人数</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="recommend_num" type="text" value="{$user['recommend_num']?$user['recommend_num']:'0'}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">入职人数</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="entry_num" type="text" value="{$user['entry_num']?$user['entry_num']:'0'}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {if !empty($returned_list)}
+                {foreach $returned_list as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        {$v.create_time_text} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回款金额:{$v.price}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作人:{$v.admin.real_name}
+                    </div>
+                    <div class="layui-input-block">
+                        备注内容:{$v.remark}
+                    </div>
+                    <div class="layui-input-block image_max">
+                        支付凭证: <img src="{$v.pay_proof}" style="width: 20%;" class="image_max">
+                    </div>
+                </div>
+                {/foreach}
+                {/if}
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {if !empty($refund_list)}
+                {foreach $refund_list as $k => $v}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        {$v.create_time_text}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;退款金额:{$v.price}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;操作人:{$v.admin.real_name}
+                    </div>
+                    <div class="layui-input-block">
+                        备注内容:{$v.remark}
+                    </div>
+                    <div class="layui-input-block image_max1">
+                        支付凭证: <img src="{$v.pay_proof}" style="width: 20%">
+                    </div>
+                </div>
+                {/foreach}
+                {/if}
+            </form>
+        </div>
+        <div style="height: 50px;width: 100%;overflow: hidden"></div>
+    </div>
+
+</div>
+<script>
+    layui.use(['table', 'form'], function() {
+        var table = layui.table
+            , form = layui.form;
+        $('.image_max img').on('click', function () {
+            layer.photos({
+                photos: ".image_max",
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+        $('.image_max1 img').on('click', function () {
+            layer.photos({
+                photos: ".image_max1",
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+    })
+</script>
+
+{include file="public/footer" /}
+

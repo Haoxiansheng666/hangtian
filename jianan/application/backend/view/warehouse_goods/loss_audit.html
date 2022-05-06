@@ -1,0 +1,188 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+  .layui-card-header.layuiadmin-card-header-auto {
+      padding-top: 12px;
+      padding-bottom: 8px;
+  }
+  .layui-table-cell{
+      height:40px;
+      line-height: 40px;
+  }
+  .layui-tab{
+    margin: 10px 15px;
+  }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body ">
+          <div style="margin-bottom: 8px;" class="search">
+              <button id="wsh" class="layui-btn" data-type="wsh" >未审核</button>
+              <button id="shtg" class="layui-btn" data-type="shtg" >审核通过</button>
+              <button id="shwtg" class="layui-btn" data-type="shwtg" >审核未通过</button>
+          </div>
+        <table id="layui-table" lay-filter="layui-table-tool"></table>
+        <script type="text/html" id="barTpl">
+            {if in_array('155',$rule_ids)}
+          <a class="layui-btn layui-btn-xs" lay-event="consent">同意</a>
+            {/if}
+          {if in_array('156',$rule_ids)}
+          <a class="layui-btn layui-btn-xs" lay-event="refuse">拒绝</a>
+            {/if}
+        </script>
+          <script type="text/html" id="adminTpl">
+              {{ d.admin.real_name }}
+          </script>
+          <script type="text/html" id="cadminTpl">
+              {{ d.check_admin.real_name }}
+          </script>
+          <script type="text/html" id="nameTpl">
+              {{ d.goods.name }}
+          </script>
+          <script type="text/html" id="numTpl">
+              {{ d.num }}{{ d.goods.unit }}
+          </script>
+          <script type="text/html" id="priceTpl">
+              {{ d.price }}元/{{ d.goods.unit }}
+          </script>
+          <script type="text/html" id="totalPriceTpl">
+              {{ d.price * d.num }}元
+          </script>
+      </div>
+    </div>
+  </div>
+  <script>
+    layui.use(['table','form','element','jquery'], function(){
+        var table = layui.table
+        , element = layui.element
+        , jquery = layui.jquery
+        , form = layui.form;
+        jquery("#wsh").css({"background-color":'#FF5722'});
+        jquery("#shtg").css({"background-color":''});
+        jquery("#shwtg").css({"background-color":''});
+        tableClick();
+        function tableClick(){
+
+            table.render({
+                elem: '#layui-table'
+                ,url: "{:Url('WarehouseGoods/getLossAuditData')}" //数据接口
+                // ,width: 892
+                //,height: 500
+                ,height: 'full-180' //高度最大化减去差值
+                ,page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    ,curr: 1 //设定初始在第 5 页
+                    ,groups: 5 //只显示 1 个连续页码
+                    ,first: false //不显示首页
+                    ,last: false //不显示尾页
+                }
+                ,limit:15
+                ,limits:[5,12,15,30,45,60,75,90]
+                ,cols: [[ //表头
+                    // {type:'checkbox',fixed: 'left'},
+                    {field: 'id', title: '编号',width:60}
+                    ,{title: '名称', templet: '#nameTpl'}
+                    ,{title: '数量', templet: '#numTpl'}
+                    ,{field: 'type_text', title: '货物类型'}
+                    ,{field: 'mark', title: '备注'}
+                    ,{field: 'create_time_text', title: '申请时间',width:180}
+                    ,{title: '申请人', templet: '#adminTpl'}
+                    ,{title: '操作', templet: '#barTpl',width:300}
+                ]]
+                ,id: 'tablereload'
+            });
+        }
+        function tableClick1(status){
+            table.render({
+                elem: '#layui-table'
+                ,url: "{:Url('WarehouseGoods/getLossAuditData')}" //数据接口
+                // ,width: 892
+                //,height: 500
+                ,where: {status:status}
+                ,height: 'full-180' //高度最大化减去差值
+                ,page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    ,curr: 1 //设定初始在第 5 页
+                    ,groups: 5 //只显示 1 个连续页码
+                    ,first: false //不显示首页
+                    ,last: false //不显示尾页
+                }
+                ,limit:15
+                ,limits:[5,12,15,30,45,60,75,90]
+                ,cols: [[ //表头
+                    // {type:'checkbox',fixed: 'left'},
+                    {field: 'id', title: '编号',width:60}
+                    ,{title: '名称', templet: '#nameTpl'}
+                    ,{title: '数量', templet: '#numTpl'}
+                    ,{field: 'type_text', title: '货物类型'}
+                    ,{field: 'mark', title: '备注'}
+                    ,{field: 'create_time_text', title: '申请时间',width:180}
+                    ,{title: '申请人', templet: '#adminTpl'}
+                    ,{field: 'check_time_text', title: '审核时间',width:180}
+                    ,{title: '审核人', templet: '#cadminTpl'}
+                ]]
+                ,id: 'tablereload'
+            });
+        }
+        var $ = layui.$, active = {
+          reload: function(){
+              //执行重载
+              table.reload('tablereload', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      name: $('input[name="name"]').val(),
+                      type: $("#type option:selected").val(),
+                  }
+              });
+          },
+            wsh:function (){
+                jquery("#wsh").css({"background-color":'#FF5722'});
+                jquery("#shtg").css({"background-color":''});
+                jquery("#shwtg").css({"background-color":''});
+                tableClick();
+            },
+            shtg:function (){
+                jquery("#wsh").css({"background-color":''});
+                jquery("#shtg").css({"background-color":'#FF5722'});
+                jquery("#shwtg").css({"background-color":''});
+                tableClick1(1);
+            },
+            shwtg:function (){
+                jquery("#wsh").css({"background-color":''});
+                jquery("#shtg").css({"background-color":''});
+                jquery("#shwtg").css({"background-color":'#FF5722'});
+                tableClick1(2);
+            },
+        };
+        $('.search .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听工具条
+        table.on('tool(layui-table-tool)', function(obj){
+            iss = $(this);
+            if(obj.event === 'consent'){
+                layer.confirm('确认同意出库申请吗？',function(index){
+                    var data = {id: obj.data.id};
+                    var url = "{:Url('WarehouseGoods/consent')}";
+                    jqueryAjax('POST',url,data,successReload);
+                });
+            }else if(obj.event === 'refuse'){
+                layer.confirm('确认拒绝出库申请吗?',function(index){
+                    var url = "{:Url('WarehouseGoods/refuse')}?id=" + obj.data.id;
+                    layer.close(index);
+                    x_admin_show('审核拒绝',url,800,600);
+                });
+            }
+
+        });
+    });
+  </script>
+</body>
+</html>
+

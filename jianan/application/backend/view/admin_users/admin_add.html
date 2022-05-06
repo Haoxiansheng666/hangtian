@@ -1,0 +1,214 @@
+{include file="public/header" /}
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form class="layui-form" action="" id="search" onkeydown="if(event.keyCode==13){return false;}">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="reqcolor">*</span>校区</label>
+                <div class="layui-input-block">
+                    <select name="campus_id" lay-verify="required" lay-search="" id="campus_id">
+                        <option value="">请选择</option>
+                        {foreach name='campus_list' item='v'}
+                        {eq name="v.id" value="$data['campus_id']"}
+                        <option value="{$v.id}" selected>{$v.name}</option>
+                        {else /}
+                        <option value="{$v.id}">{$v.name}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="reqcolor">*</span>部门</label>
+                <div class="layui-input-block">
+                    <select name="department_id" lay-verify="required" lay-search="" lay-filter="department_id">
+                        <option value="">请选择</option>
+                        {foreach name='department_list' item='v'}
+                        {eq name="v.id" value="$data['department_id']"}
+                        <option value="{$v.id}" selected>{$v.name}</option>
+                        {else /}
+                        <option value="{$v.id}">{$v.name}</option>
+                        {/eq}
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="reqcolor">*</span>角色</label>
+                <div class="layui-input-block">
+                    <select name="group_id" lay-verify="required" lay-search="" id="group_id" lay-filter="group_id">
+                        <option value="">请先选择部门</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="reqcolor">*</span>上级管理员</label>
+                <div class="layui-input-block">
+                    <select name="pid" lay-verify="required" lay-search="" id="pid">
+                        <option value="">请先选择部门</option>
+                    </select>
+                </div>
+            </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label"><span class="reqcolor">*</span>登录账户</label>
+            <div class="layui-input-block">
+              <input type="text" name="admin_name" lay-verify="required|admin_name" autocomplete="off" placeholder="" class="layui-input" value="{$data['admin_name']?$data['admin_name']:''}" >
+            </div>
+          </div>
+          <div class="layui-form-item" >
+            <label class="layui-form-label"><span class="reqcolor">*</span>姓名</label>
+            <div class="layui-input-block">
+              <input type="text" name="real_name" lay-verify="required" autocomplete="off" placeholder="" class="layui-input" value="{$data['real_name']?$data['real_name']:''}">
+            </div>
+          </div>
+         
+          <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+              <input type="radio" name="sex" value="1" title="男"  {if condition="$data['sex']=='1'"} checked {/if}>
+              <input type="radio" name="sex" value="2" title="女" {if condition="$data['sex']=='2'"} checked {/if} >
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-block">
+              <input type="tel" name="mobile" autocomplete="off" placeholder="" class="layui-input" value="{$data['mobile']?$data['mobile']:''}" >
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+              <input type="text" name="email"  autocomplete="off" placeholder="" class="layui-input" value="{$data['email']?$data['email']:''}" name="email" >
+            </div>
+          </div>
+           <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="status" value="1" title="启用"  {if condition="$data['status']==1"} checked {/if}>
+
+              <input type="radio" name="status" value="0" title="锁定" {if condition="$data['status']==0"} checked {/if}>
+            </div>
+          </div>
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+                <input  type="hidden" name='id' value="{$data['id']?$data['id']:''}" id='hidden-id'>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+                
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+  layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 自定义验证规则 */
+    form.verify({
+      admin_name: function(value){
+        if(value.length < 4){
+          return '登录账号至少得4个字符';
+        }
+      }
+     
+    });
+    var s_campus_id = "{$data.campus_id}";
+    var department_id = "{$data.department_id}";
+    var group_id = "{$data.group_id}";
+    var pid = "{$data.pid}";
+    if (department_id){
+        getDepartmentSelect({id:department_id});
+    }
+    if (group_id){
+        getPidSelect({id:group_id,campus_id:s_campus_id});
+    }
+      form.on('select(department_id)', function(data){
+          let id = data.value;
+          getDepartmentSelect({id:id});
+      });
+      form.on('select(group_id)', function(data){
+          let id = data.value,
+            campus_id = $("#campus_id option:selected").val();
+          if (!campus_id){
+              layer.msg('请先选择校区',function () {
+                  return false;
+              });
+          }
+          getPidSelect({id:id,campus_id:campus_id});
+      });
+
+      function getDepartmentSelect(where){
+          let url = "{:url('Department/getSelectData')}";
+          $.ajax({
+              url:url,
+              data:where,
+              dataType:"JSON",
+              success:function(res){
+                  $('#group_id').empty()
+                  let list = res.data,
+                      len = list.length;
+                  var t;
+                  for (var i = 0; i < len; i++){
+                      if (i == 0 && !pid){
+                           pid = list[i]['id'];
+                      }
+                      t += `<option value="` + list[i].id + `"`;
+                      if (group_id == list[i].id){
+                          t += ` selected` ;
+                      }
+                      t += `>`+list[i].group_name+`</option>`;
+                  }
+                  $("#group_id").append(t);
+
+                  // 添加完记得render下  否则不会刷新到页面中
+                  form.render();
+              }
+          });
+      }
+
+      function getPidSelect(where){
+          let url = "{:url('Department/getPidData')}";
+          $.ajax({
+              url:url,
+              data:where,
+              dataType:"JSON",
+              success:function(res){
+                  $('#pid').empty()
+                  let list = res.data,
+                      len = list.length;
+                  var s;
+                  for (var i = 0; i < len; i++){
+                      s += `<option value="`+list[i].id + `"`;
+                      if (pid == list[i].id){
+                          s += ` selected` ;
+                      }
+                      s += `>`+list[i].real_name+`</option>`;
+                  }
+                  $("#pid").append(s);
+                  form.render();
+              }
+          });
+      }
+    /* 监听提交 */
+    form.on('submit(component-form-demo1)', function(data){
+      var url = "{:url('adminUsers/adminAdd')}";
+      var data =$("#search").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+  </script>
+</body>
+</html>

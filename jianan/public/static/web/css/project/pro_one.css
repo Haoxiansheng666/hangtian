@@ -1,0 +1,52 @@
+.pro_one{
+	width: 100%;
+	background-color: #fff;
+	overflow: hidden;
+	padding-top: 84px;
+	margin-bottom: 80px;
+}
+.proone{
+	width:1402px;
+	margin: 0 auto;
+}
+.pne_left{
+	width: 608px;
+	float: left;
+	padding-top: 47px;
+}
+.pne_left>p{
+	width: 100%;
+		font-family: PingFang-SC-Bold;
+		font-size: 36px;
+		color: #333333;
+		line-height: 0;
+		margin-bottom: 33px;
+}
+.pne_left>div{
+	width: 100%;
+	font-family: PingFang-SC-Medium;
+	font-size: 16px;
+	line-height: 28px;
+	color: #666666;
+	margin-bottom: 61px;
+}
+.pne_left>button{
+	width: 160px;
+	height: 46px;
+	background-color: white;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	text-align: center;
+	line-height: 46px;
+}
+.pne_right{
+	float: right;
+	width: 720px;
+	overflow: hidden;
+	font-size: 0;
+}
+.pne_right img{
+	width: 340px;
+	height: 340px;
+	margin-left: 20px;
+}

@@ -1,0 +1,37 @@
+<view style="height: 1rpx; background-color: #f6f6f6;"></view>
+<view class="nav_max">
+  <view class="nav_box">
+    <block wx:for="{{nvaList}}" wx:key="unique">
+      <view class="navSub wx:if:'{{SelectNavID == item.id ? 'Select_' : ''}}' " bindtap="SelectNav" data-id='{{item.id}}'>
+        {{item.title}}
+      </view>
+    </block>
+  </view>
+  <view class="nav_box">
+    <block wx:for="{{nvaList}}" wx:key="unique">
+      <view class="navSub_split   wx:if:'{{SelectNavID == item.id ? '' : 'navSub_split_'}}'">
+        <view></view>
+      </view>
+    </block>
+  </view>
+</view>
+
+<view class="cfc_box" wx:if="{{SelectNavID == 0}}">
+  <view class="subject" wx:if="{{DataLs.cert}}">资质名称: {{DataLs.cert}}</view>
+  <view class="subject" wx:if="{{DataLs.code}}">资质编号: {{DataLs.code}}</view>
+  <view class="subject" wx:if="{{DataLs.start_time}}">发证时间: {{DataLs.start_time}}</view>
+  <view class="subject" wx:if="{{DataLs.start_time}}">到期时间: {{DataLs.start_time}}</view>
+  <view class="subject" wx:if="{{DataLs.organization}}">发证机构: {{DataLs.organization}}</view>
+</view>
+
+<view class="bf" wx:else>
+  <view class="brief">资质标准：</view>
+  <view class="brief_ds" wx:if=" {{DataLs.content}}">
+    {{DataLs.content}}
+    <!-- <text class="bfd_ep">查看更多>></text> -->
+  </view>
+</view>
+<view class="isnull" wx:if="{{DataLs == ''}}">
+  <image src="/static/image/null.png"></image>
+  <view>这里空空如也...</view>
+</view>

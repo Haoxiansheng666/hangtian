@@ -1,0 +1,103 @@
+{include file="public/header" /}
+<link rel="stylesheet" type="text/css" href="__STATICBACKEND__/webuploader/css/webuploader.css" />
+<link rel="stylesheet" type="text/css" href="__STATICBACKEND__/webuploader/examples/image-upload/style.css" />
+<script type="text/javascript" src="__STATICBACKEND__/webuploader/dist/webuploader.js"></script>
+<script type="text/javascript" src="__STATICBACKEND__/webuploader/examples/image-upload/upload.js"></script>
+
+<style type="text/css">
+ html{
+    background-color:#fff;
+  }
+  .hidden-webupload{
+    display: none;
+  }
+</style>
+<blockquote class="layui-elem-quote" style="margin-top:36px;margin-left: 30px;">{$data['news_detail']->title}<a class="layui-btn  layui-btn-sm layui-btn-warm" href="{:url('News/index')}"   style="float:right;"><i class="layui-icon">&#xe65c;</i>返回列表</a></blockquote>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+            <div class="layui-card-body">
+                <?php  if(isset($data['ress'])){  ?>
+                {foreach $data['ress'] as $k=> $v}
+                <div style="height:200px;width:200px;float: left;margin: 0px 10px;">
+                    <div style="text-align: center;"> <!-- {$v['name']|msubstr=0,35,'utf-8',false} -->
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <a href="{$v.main_img}" target="_bank" title="{$v.name?$v.name:'查看原图'}"><img src="{$v.main_img}"  style="width:200px;height:150px;" />
+                        </a>
+                    </div>
+                    <div style="margin-top: 0px;">
+                      <div style="float:left;">
+                      <span class="layui-badge-rim">{$v['ord']}</span>
+                      </div>
+                      <div style="float:right;">
+                        <div class="layui-btn-group">
+                          <a class="layui-btn layui-btn-xs"  onclick="add_data('编辑图片信息',{$v['id']})" title="编辑图片信息"><i class="layui-icon">&#xe642;</i></a>
+                          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" onclick="del({$v['id']})" title="删除"><i class="layui-icon">&#xe640;</i></a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {/foreach}
+                <?php  } ?>
+                <input type="hidden" name="news_id" id="hidden-id" value="{$data['param']['id']}">
+                <div style="height:200px;width:200px;float: left;">
+                    <a  onclick="imgadd()" href="javascript:;" class="" title="添加图片">
+                      <img src="__STATICBACKEND__/other/add.jpg" style="width:80px;height:80px;margin: 50px 50px; ">
+                    </a>
+                </div>
+            </div>
+      </div>
+    </div>
+</div>
+<!-- 上传图片框 -->
+<div id="wrapper">
+    <div id="container"  class="hidden-webupload">
+        <!--头部，相册选择和格式选择-->
+        <div id="uploader">
+            <div class="queueList">
+                <div id="dndArea" class="placeholder">
+                    <div id="filePicker"></div>
+                    <p>或将照片拖到这里，单次可选20张(最大300k)</p>
+                </div>
+            </div>
+            <div class="statusBar" style="display:none;">
+                <div class="progress">
+                    <span class="text">0%</span>
+                    <span class="percentage"></span>
+                </div>
+                <div class="info">
+                </div>
+                <div class="btns">
+                    <div id="filePicker2"></div>
+                    <div class="uploadBtn">开始上传</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 上传图片框 -->
+<script type="text/javascript">
+    function add_data(title,id){
+        var url = "{:url('News/editTuji')}"+ '?id=' + id;
+        x_admin_show(title,url,500,400);
+    }
+    function del(id){
+        layer.confirm('确认要删除吗？',function(index){
+            var url = "{:url('News/imgDelete')}";
+            jqueryAjax('POST',url,{id:id},successReload);
+        });
+    }
+    //弹出上传图片
+    function imgadd(){
+      layer.open({
+          type: 1,
+          title: '上传新闻图集',
+          area: ['600px', '400'],//如果弹出框尺寸调整，点击上传按钮没反应，可以修改\static\backend\webuploader\dist\webuploader
+          shadeClose: true, //点击遮罩关闭
+          content: $('#container')
+        });
+    }
+</script>
+{include file="public/footer" /}
+

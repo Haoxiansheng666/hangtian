@@ -1,0 +1,93 @@
+{include file="public/header" /}
+<script src="__STATICBACKEND__/distpicker/js/distpicker.js"></script>
+<!--<script src="__STATICBACKEND__/distpicker/js/main.js"></script>-->
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  #province,#city,#area{
+    width:102px;
+    height:38px;
+    border: 1px solid #E6E6E6;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+      <label class="layui-form-label">名称<span class="reqcolor">*</span></label>
+      <div class="layui-input-block">
+        <input type="text" name="name" class="layui-input" lay-verify="required" value="{$data['ress']['name']|default=''}" >
+      </div>
+    </div>
+    <div class="layui-form-item" id="bioarea-wrap">
+      <label class="layui-form-label">数量<span style="color:red;">*</span></label>
+      <div class="layui-input-block">
+          <input type="text" name="num" class="layui-input" lay-verify="required" value="{$data['ress']['num']|default=''}">
+      </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">货物类型</label>
+        <div class="layui-input-block">
+            <select name="type" id="type">
+                <option value="1">固定资产</option>
+                <option value="2">损耗品</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择单位</label>
+        <div class="layui-input-block">
+            <select name="unit" id="unit">
+                <option value="个">个</option>
+                <option value="辆">辆</option>
+                <option value="只">只</option>
+                <option value="箱">箱</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item" id="price">
+        <label class="layui-form-label">单价<span style="color:red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="price" class="layui-input" lay-verify="required" value="{$data['ress']['price']|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="mark">{$data['ress']['mark']|default=''}</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$data['ress']['id']?$data['ress']['id']:''}" id='hidden-id'>
+        <input  type="hidden" name='ware_id' value="{$warehouse_id|default=''}" id='hidden-ware_id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+    ,bioarea: 'bioarea/bioarea' // 省市区三级联动
+  }).use(['index', 'form', 'laydate', 'bioarea'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    , bioarea = layui.bioarea
+    ,form = layui.form;
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+      var url = "{:url('WarehouseGoods/add')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>

@@ -1,0 +1,143 @@
+{include file="public/header" /}
+  <div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-card-body" style="padding: 15px;">
+        <form class="layui-form" action="" id="search" onkeydown="if(event.keyCode==13){return false;}">
+          <div class="layui-form-item" >
+            <label class="layui-form-label"><span class="reqcolor">*</span>角色名称</label>
+            <div class="layui-input-block">
+              <input type="text" name="group_name" lay-verify="required" autocomplete="off" placeholder="" class="layui-input" value="{$data['group_name']?$data['group_name']:''}">
+            </div>
+          </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label"><span class="reqcolor">*</span>部门</label>
+                <div class="layui-input-block">
+                    <select name="department_id" id="department_id" lay-search="" lay-filter="department_id">
+                        <option value="0">无</option>
+                        {foreach $department_list as $k => $v}
+                        <option value="{$v.id}" {if !empty($data.department_id) && $data.department_id eq $v.id} selected {/if}>{$v.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item" >
+                <label class="layui-form-label"><span class="reqcolor">*</span>上级权限</label>
+                <div class="layui-input-block">
+                    <select name="pid" id="pid">
+                    </select>
+                </div>
+            </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label"><span class="reqcolor"></span>角色备注</label>
+            <div class="layui-input-block">
+              <textarea name="desc" placeholder="请输入内容" class="layui-textarea">{$data['desc']?$data['desc']:''}</textarea>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+              <input type="radio" name="status" value="1" title="启用"  {if condition="$data['status']==1"} checked {/if}>
+
+              <input type="radio" name="status" value="0" title="禁用" {if condition="$data['status']==0"} checked {/if}>
+            </div>
+          </div>
+          <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+              <div class="layui-footer" style="left: 0;">
+                <input  type="hidden" name='id' value="{$data['id']?$data['id']:''}" id='hidden-id'>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+  layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 自定义验证规则 */
+    form.verify({
+      admin_name: function(value){
+        if(value.length < 4){
+          return '登录账号至少得4个字符';
+        }
+      }
+      ,admin_password: [/(.+){6,12}$/, '密码必须6到12位']
+      ,password2: [/(.+){6,12}$/, '密码必须6到12位']
+    });
+    /* 监听提交 */
+    form.on('submit(component-form-demo1)', function(data){
+      var url = "{:url('rule/groupAdd')}";
+      var data =$("#search").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    form.on('checkbox(rules)', function(data){
+        var did1=data.elem.id;
+        var child = $(data.elem).parents('div').find('div input[type="checkbox"]');
+        child.each(function(index, item){
+          var did=item.id;
+          var str = "'"+did+"'";
+          var reg = RegExp(did1);
+          if(str.match(reg)){
+            item.checked = data.elem.checked;
+          }
+        });
+        form.render('checkbox');
+    });
+      var department_id = "{$data.department_id}";
+      var group_id = "{$data.pid}";
+      if (department_id){
+          getDepartmentSelect({id:department_id});
+      }
+      form.on('select(department_id)', function(data){
+          let id = data.value;
+          getDepartmentSelect({id:id});
+      });
+      function getDepartmentSelect(where){
+          let url = "{:url('Department/getSelectData')}";
+          $.ajax({
+              url:url,
+              data:where,
+              dataType:"JSON",
+              success:function(res){
+                  $('#pid').empty()
+                  let list = res.data,
+                      len = list.length;
+                  var t;
+                  if (len < 1){
+                      t += `<option value="` + 0 ;
+                      if (group_id && group_id == 0){
+                          t += ` selected` ;
+                      }
+                      t += `">无</option>`;
+                  }else{
+                      for (var i = 0; i < len; i++){
+                          t += `<option value="` + list[i].id ;
+                          if (group_id && group_id == list[i].id){
+                              t += ` selected` ;
+                          }
+                          t += `">`+list[i].group_name+`</option>`;
+                      }
+                      $("#pid").append(t);
+                  }
+                  // 添加完记得render下  否则不会刷新到页面中
+                  form.render('select');
+              }
+          });
+      }
+  });
+  </script>
+</body>
+</html>

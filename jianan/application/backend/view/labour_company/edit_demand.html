@@ -1,0 +1,313 @@
+{include file="public/header" /}
+<script src="__STATICBACKEND__/distpicker/js/distpicker.js"></script>
+<!--<script src="__STATICBACKEND__/distpicker/js/main.js"></script>-->
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  #province,#city,#area{
+    width:102px;
+    height:38px;
+    border: 1px solid #E6E6E6;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">工种分类</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline">
+                <select name="cate_id" id="cate_id" lay-filter="cate_id">
+                    <option value="">请选择工种分类</option>
+                    {foreach $pro_cate_list as $k => $v}
+                    <option value="{$v.id}" {if $data.cate_id eq $v.id} selected {/if}>{$v.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <label class="layui-form-label">二级栏目</label>
+            <div class="layui-input-inline">
+                <select name="pid" id="pid" lay-filter="pid">
+                    <option value="0">请选择二级栏目</option>
+                </select>
+            </div>
+            <label class="layui-form-label">工种选择</label>
+            <div class="layui-input-inline">
+                <select name="profession_id" id="profession_id">
+                    <option value="0">请选择工种</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系人姓名<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="contact_name" class="layui-input" lay-verify="required" value="{$data.contact_name|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">联系人电话<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="contact_mobile" class="layui-input" lay-verify="required" value="{$data.contact_mobile|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">需求人数<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="people_num" class="layui-input" lay-verify="required" value="{$data.people_num|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工作经验</label>
+        <div class="layui-input-block">
+            <input type="text" name="work_exp" class="layui-input" value="{$data.work_exp|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">薪资待遇</label>
+        <div class="layui-input-block">
+            <input type="text" name="salary_expectation" class="layui-input" value="{$data.salary_expectation|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="remark">{$data.remark|default=''}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='company_id' value="{$data.company_id?$data.company_id:''}" id='hidden-company_id'>
+        <input  type="hidden" name='id' value="{$data.id?$data.id:''}" id='hidden-id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    /* 监听提交 */
+    form.on('submit(addaction)', function(){
+      var url = "{:url('LabourCompany/edit_demand')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    var cate_id = "{$data.cate_id|default=''}";
+    var data_pid = "{$data.pid|default=''}";
+    if (cate_id){
+        getSelectData({cate_id:cate_id});
+    }
+    if (data_pid){
+        getSelectSonData({cate_id:data_pid});
+    }
+    // 工种一级栏目
+    form.on('select(cate_id)', function(data){
+        let v = data.value;
+        var pid;
+        $.ajax({
+            type:"POST",
+            url:"{:url('Profession/selectData')}",
+            data: {cate_id : data.value},
+            dataType:"json",
+            success:function(res){
+                if (res.code == 1){
+                    let list = res.data;
+                    $("#pid").empty();
+                    var t;
+                    for (let i=0; i < list.length; i++){
+                        if (i == 0){
+                            pid = list[i]['id'];
+                        }
+                        t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                    }
+                    if (pid){
+                        $.ajax({
+                            type:"POST",
+                            url:"{:url('Profession/selectSonData')}",
+                            data: {cate_id : pid},
+                            dataType:"json",
+                            success:function(res){
+                                if (res.code == 1){
+                                    let list = res.data;
+                                    $("#profession_id").empty();
+                                    var t;
+                                    for (let i=0; i < list.length; i++){
+                                        t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                                    }
+                                    $("#profession_id").append(t);
+                                    // 添加完记得render下  否则不会刷新到页面中
+                                    form.render('select');
+                                }else{
+                                    $("#profession_id").empty();
+                                }
+                            },
+                            error:function(res){
+                                $("#profession_id").empty();
+                                return false;
+                            }
+                        });
+                    }
+                    $("#pid").append(t);
+                    // 添加完记得render下  否则不会刷新到页面中
+                    form.render('select');
+                }else{
+                    $("#pid").empty();
+                }
+            },
+            error:function(res){
+                $("#pid").empty();
+                return false;
+            }
+        });
+
+    });
+    // 工种列表
+    form.on('select(pid)', function(data){
+        let v = data.value;
+        $.ajax({
+            type:"POST",
+            url:"{:url('Profession/selectSonData')}",
+            data: {cate_id : data.value},
+            dataType:"json",
+            success:function(res){
+                if (res.code == 1){
+                    let list = res.data;
+                    $("#profession_id").empty();
+                    var t;
+                    for (let i=0; i < list.length; i++){
+                        t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                    }
+                    $("#profession_id").append(t);
+                    // 添加完记得render下  否则不会刷新到页面中
+                    form.render('select');
+                }else{
+                    $("#profession_id").empty();
+                }
+            },
+            error:function(res){
+                $("#profession_id").empty();
+                return false;
+            }
+        });
+    });
+    /**
+     * 获取一级栏目及下级工种
+     * @param data
+     */
+    function getSelectData(data) {
+        var pid;
+        $.ajax({
+            type:"POST",
+            url:"{:url('Profession/selectData')}",
+            data: data,
+            dataType:"json",
+            success:function(res){
+                if (res.code == 1){
+                    let list = res.data;
+                    $("#pid").empty();
+                    var t;
+                    for (let i=0; i < list.length; i++){
+                        if (i == 0){
+                            pid = list[i]['id'];
+                        }
+                        if(data_pid){
+                            pid = data_pid;
+                            t += `<option `;
+                            if (data_pid == list[i]['id']){
+                                t += `selected=true `;
+                            }
+                            t += `value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                        }else{
+                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                        }
+                    }
+                    if (pid){
+                        $.ajax({
+                            type:"POST",
+                            url:"{:url('Profession/selectSonData')}",
+                            data: {cate_id : pid},
+                            dataType:"json",
+                            success:function(res){
+                                if (res.code == 1){
+                                    let list = res.data;
+                                    $("#profession_id").empty();
+                                    var t;
+                                    let profession_id = "{$res.profession_id|default=''}";
+                                    for (let i=0; i < list.length; i++){
+                                        t += `<option `;
+                                        if (profession_id == list[i]['id']){
+                                            t += `selected=true `;
+                                        }
+                                        t += `value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                                    }
+                                    $("#profession_id").append(t);
+                                    // 添加完记得render下  否则不会刷新到页面中
+                                    form.render('select');
+                                }else{
+                                    $("#profession_id").empty();
+                                }
+                            },
+                            error:function(res){
+                                $("#profession_id").empty();
+                                return false;
+                            }
+                        });
+                    }
+                    $("#pid").append(t);
+                    // 添加完记得render下  否则不会刷新到页面中
+                    form.render('select');
+                }else{
+                    $("#pid").empty();
+                }
+            },
+            error:function(res){
+                $("#pid").empty();
+                return false;
+            }
+        });
+    }
+    /**
+     * 获取下级工种
+     * @param data
+     */
+    function getSelectSonData(data) {
+        $.ajax({
+            type:"POST",
+            url:"{:url('Profession/selectSonData')}",
+            data: data,
+            dataType:"json",
+            success:function(res){
+                if (res.code == 1){
+                    let list = res.data;
+                    $("#profession_id").empty();
+                    var t;
+                    let profession_id = "{$res.profession_id|default=''}";
+                    for (let i=0; i < list.length; i++){
+                        t += `<option `;
+                        if (profession_id == list[i]['id']){
+                            t += `selected=true `;
+                        }
+                        t += `value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                    }
+                    $("#profession_id").append(t);
+                    // 添加完记得render下  否则不会刷新到页面中
+                    form.render('select');
+                }else{
+                    $("#profession_id").empty();
+                }
+            },
+            error:function(res){
+                $("#profession_id").empty();
+                return false;
+            }
+        });
+    }
+  });
+
+</script>

@@ -1,0 +1,76 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+html,body{
+	width: 100%;
+}
+.pack{
+	width: 100%;
+	background-image: url(../img/pack/02.jpg);
+	background-size: auto 100%;
+	box-sizing: border-box;
+	padding: 104px 0 104px 0;
+}
+.packs{
+	width: 1262px;
+	margin: 0 auto;
+	text-align: center;
+}
+.packs>p{
+	font-family: PingFang-SC-Bold;
+	font-size: 52px;
+	height: 122px;
+	box-sizing: border-box;
+	line-height: 70px;
+	color: #333333;
+	z-index: 11;
+	font-weight: bold;
+}
+.yellow{
+	display: inline-block;
+	height: 62px;
+	box-sizing: border-box;
+	border-bottom: 10px solid #EDAD0C;
+}
+.color{
+	width: 229px;
+	height: 24px;
+	margin: 0 auto;
+	font-size: 24px;
+	line-height: 72px;
+	color: #333333;
+	z-index: 1;
+}
+.brand_btm{
+	width: 100%;
+	padding: 109px 0 0 0;
+}
+.brand_btm>ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	 display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+.brand_btm>ul>li>div{
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+	margin-bottom: 44px;
+}
+.brand_btm>ul>li img{
+	width: 100%;
+}
+.brand_btm>ul>li>p{
+	font-size: 22px;
+	color: #333333;
+	margin-bottom: 22px;
+}
+.brand_btm>ul>li>span{
+	font-size: 16px;
+	/* line-height: 24px; */
+	color: #333333;
+	
+}

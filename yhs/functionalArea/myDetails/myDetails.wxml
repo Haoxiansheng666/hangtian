@@ -1,0 +1,30 @@
+<view class="split"></view>
+<!-- 修改头像 -->
+<view class="ChangeHead">
+  <view class="ch_name">头像</view>
+  <view class="ch_img" bindtap="ChangeImg">
+    <image src="{{myimg}}" />
+  </view>
+</view>
+<!-- 信息 -->
+<view class="ChangeCent">
+  <view class="cc_name">昵称</view>
+  <view class="cc_ipt">
+    <input type="text" bindinput="ChangeName" value="{{newName}}" placeholder="请输入个人昵称" />
+  </view>
+  <view class="cc_name">性别</view>
+  <view class="cc_ipt">
+    <!-- <input disabled type="text" placeholder="{{myDetail.sex == 1?'男':'女'}}" /> -->
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+      <view class="picker">
+        {{array[index]}}
+      </view>
+    </picker>
+    <image src="/static/image/19.png"></image>
+  </view>
+  <view class="cc_name">手机号</view>
+  <view class="cc_ipt" bindtap="ChangePhone">
+    <input disabled type="text" placeholder="{{myDetail.mobile}}" />
+  </view>
+</view>
+<button class="SaveBtn" bindtap="saveDetail">保存信息</button>

@@ -1,0 +1,186 @@
+{include file="public/header" /}
+{include file="public/ueditor" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  .input_img_inline{
+    float: none !important;
+    width: 100px !important;
+  }
+  .layui-upload-list{
+      display: inline-block;
+  }
+  .icon_view, .layui-upload-img {
+      width: 80px;
+      height: 80px;
+  }
+  </style>
+<form class="layui-form"  style="margin-top:30px;width:80%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+          <input type="text" name="title" lay-verify="required|title"  placeholder="" class="layui-input" value="{$banner['title']?$banner['title']:''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">英文字符<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="eng_attr" lay-verify="required"  placeholder="" class="layui-input" value="{$banner['eng_attr']?$banner['eng_attr']:''}">
+        </div>
+    </div>
+    <div class="layui-form-item" style="margin-top: 10px;" id="add">
+        <label class="layui-form-label" style="margin-top:30px;">轮播图<br/>(1920*500)<span class="reqcolor">*</span></label>
+        <div class="layui-upload layui-input-block">
+             <button type="button" class="layui-btn" id="images">上传图片</button>
+              <div class="layui-input-inline input_img_inline">
+                  <?php  if(isset($banner['id']) && !empty($banner['img_url'])){  ?>
+                  <a href="{$banner['img_url']}" target="_blank"><img src="{$banner['img_url']}" class="icon_view" title="点击查看完整图片"/></a>
+                  <?php  } ?>
+              </div>
+              <div class="layui-upload-list">
+                  <img class="layui-upload-img" style="border:none;" id="preview">
+                  <p id="imgText1"></p>
+              </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="ord" class="layui-input" value="{$banner['ord']?$banner['ord']:0}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">跳转类型</label>
+        <div class="layui-input-block">
+            <select name="type" id="type" lay-filter="checkType">
+                <option value="0" {if empty($banner.type)} selected {/if}>不跳转</option>
+                <option value="1" {if !empty($banner.type) && $banner.type eq 1} selected {/if}>跳转文章</option>
+                <option value="2" {if !empty($banner.type) && $banner.type eq 2} selected {/if}>跳转栏目</option>
+                <option value="3" {if !empty($banner.type) && $banner.type eq 3} selected {/if}>跳转外部链接</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">跳转地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="url" class="layui-input" value="{$banner['url']?$banner['url']:''}" id="url">
+        </div>
+    </div>
+    <input type="hidden" lay-verify="imgurl" name="main_img" id="imgurl" value="{$banner['img_url']?$banner['img_url']:''}">
+    <div class="layui-form-item" style="text-align:center;">
+        <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$banner['id']?$banner['id']:''}" id='hidden-id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+
+        </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form
+    , upload = layui.upload;
+    /* 自定义验证规则 */
+    form.verify({
+      title: function(value){
+      if(value.length > 252){
+        return '标题应小于252个字符！';
+        }
+      }
+      ,key_words: function(value){
+      if(value.length > 252){
+        return '关键字应小于252个字符！';
+        }
+      }
+      ,from: function(value){
+      if(value.length > 252){
+        return '长度应小于252个字符！';
+        }
+      }
+      ,link: function(value){
+      if(value.length > 252){
+        return '长度应小于252个字符！';
+        }
+      }
+      ,imgurl: function(value){
+          var imgurl = $('#imgurl').val();
+          if(imgurl == ''){
+               return '请上传主图';
+          } 
+      }
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(){
+        {if isset($banner['id']) && $banner.id}
+        var url = "{:url('Banner/edit')}";
+        {else}
+        var url = "{:url('Banner/add')}";
+        {/if}
+
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    form.on('select(checkType)', function(data){
+        var type=data.value;
+        console.log(type);
+        if(type == 1){
+            $("#url").attr('placeholder','请填写文章ID');
+        }else if(type == 2){
+            $("#url").attr('placeholder','请输入栏目ID');
+        }else if(type == 3){
+            $("#url").attr('placeholder','请填写外部链接');
+        }
+    });
+    //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#images'
+            , method: 'POST'
+            , url: "{:Url('Upload/layuiImgUpload')}"
+            , field: 'img'
+            , data: {
+                dir: 'news' +
+                ''
+            }
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#preview').attr('src', result); //图片链接（base64）
+                    console.log(result);
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                } else {
+                    var path = res.data;
+                    $('#imgurl').val(path);
+                    data['imgurl'] = path;
+                }
+                //上传成功
+            }
+            , error: function () {
+                $('#preview').attr('src', '')
+                layer.alert('主图大小不能超过300k，请重新选择!');
+                //演示失败状态，并实现重传
+                // var imgText1 = $('#imgText1');
+                // imgText1.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                // imgText1.find('.demo-reload').on('click', function () {
+                //     uploadInst.upload();
+                // });
+            }
+        });
+  });
+
+</script>

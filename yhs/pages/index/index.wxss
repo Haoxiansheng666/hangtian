@@ -1,0 +1,174 @@
+/**index.wxss**/
+page {
+    background-color: #F6F6F6;
+}
+.logo {
+    font-size: 36rpx;
+    font-family: Source Han Sans CN;
+    font-weight: 500;
+    color: #181818;
+    padding-top: 88rpx;
+    padding-left: 34rpx;
+    background-color: white;
+  }
+  .logo image{
+    width: 226rpx;
+    height: 36rpx;
+    position: relative;
+    z-index: 10;
+  }
+.subject {
+    width: 690rpx;
+    background: #FFFFFF;
+    border-radius: 16rpx;
+    margin: 30rpx auto;
+}
+
+.sub_title {
+    display: flex;
+}
+
+.sub_t_t {
+    margin: auto;
+    padding: 29rpx 0 25rpx 0;
+    font-family: OPPOSans;
+    font-size: 26rpx;
+    font-weight: 400;
+    color: #666666;
+    text-align: center;
+    width: 33.33%;
+}
+
+.scq {
+    background-color: #f3f9ff;
+}
+
+.sc {
+    background-color: #ffffff;
+}
+
+.sub_cent_ {
+    height: 90rpx;
+}
+
+.sub_c_t {
+    font-size: 28rpx;
+    font-family: OPPOSans-M;
+    font-weight: Medium;
+    color: #333333;
+    margin: auto;
+    text-align: center;
+    width: 33.33%;
+}
+
+
+.Popup {
+    width: 560rpx;
+    height: 640rpx;
+    background-color: white;
+    border-radius: 16rpx;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 30%;
+    z-index: 10;
+}
+
+.pop1 {
+    font-size: 30rpx;
+    font-family: OPPOSans;
+    font-weight: 500;
+    color: #333333;
+    margin: 53rpx 220rpx 20rpx 220rpx;
+}
+
+.pop2 {
+    text-align: center;
+}
+
+.pop3 text {
+    color: #EB401E;
+}
+
+.pop3 {
+    width: 280rpx;
+    margin: auto;
+    text-align: center;
+    font-size: 26rpx;
+    font-family: OPPOSans;
+    font-weight: 400;
+    color: #666666;
+}
+
+.pop2 image {
+    width: 246rpx;
+    height: 268rpx;
+}
+
+.pop4 {
+    margin: 51rpx auto;
+    width: 300rpx;
+    height: 80rpx;
+    background: #1684FC;
+    border-radius: 40rpx;
+    text-align: center;
+    line-height: 80rpx;
+    font-size: 32rpx;
+    font-family: OPPOSans;
+    font-weight: 500;
+    color: #FFFFFF;
+}
+
+.Mask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: #000000;
+    opacity: 0.5;
+    z-index: 9;
+    top: 0rpx;
+}
+
+.pop5 {
+    margin-top: 100rpx;
+    text-align: center;
+}
+
+.pop5 image {
+    width: 64rpx;
+    height: 64rpx;
+}
+.navSub {
+    width: 33.33%;
+    text-align: center;
+    margin: auto;
+    font-size: 28rpx;
+    font-family: OPPOSans;
+    font-weight: 400;
+    color: #333333;
+}
+.nav_max{
+    background-color: white;
+}
+.navSub_split_{
+    opacity: 0;
+}
+.Select_ {
+    font-size: 32rpx !important;
+    font-weight: bold !important;
+    color: #181818 !important;
+}
+
+.navSub_split {
+    margin: auto;
+    width: 29rpx;
+    height: 7rpx;
+    background: #1684FC;
+    margin-top: 13rpx;
+}
+
+.nav_box {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}

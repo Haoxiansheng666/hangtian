@@ -1,0 +1,43 @@
+<view class="nav_max">
+  <view class="nav_box">
+    <block wx:for="{{nvaList}}" wx:key="unique">
+      <view class="navSub wx:if:'{{SelectNavID == item.id ? 'Select_' : ''}}' " bindtap="SelectNav" data-id='{{item.id}}'>{{item.title}}</view>
+    </block>
+  </view>
+  <view class="nav_box">
+    <block wx:for="{{nvaList}}" wx:key="unique">
+      <view class="navSub_split  wx:if:'{{SelectNavID == item.id ? '' : 'navSub_split_'}}'"></view>
+    </block>
+  </view>
+</view>
+
+<block wx:for="{{dataLs}}" wx:key="unique">
+  <view class="subject">
+    <view class="sb_head">
+      <view class="sbh_l">{{item.cert}}</view>
+      <view class="sbh_r">剩余{{SelectNavID}}个月</view>
+    </view>
+    <view class="sb_cent">
+      <view class="sbc_c">
+        <view class="sbcc_l">证书编号</view>
+        <view class="sbcc_r">{{item.code}}</view>
+      </view>
+      <view class="sbc_c">
+        <view class="sbcc_l">发证日期</view>
+        <view class="sbcc_r">{{item.start_time}}</view>
+      </view>
+      <view class="sbc_c">
+        <view class="sbcc_l">到期时间</view>
+        <view class="sbcc_r">{{item.end_time}}</view>
+      </view>
+      <view class="sbc_c">
+        <view class="sbcc_l">发证机构</view>
+        <view class="sbcc_r">{{item.organization}}</view>
+      </view>
+    </view>
+  </view>
+</block>
+<view class="isnull" wx:if="{{dataLs == ''}}">
+  <image src="/static/image/null.png"></image>
+  <view>这里空空如也...</view>
+</view>

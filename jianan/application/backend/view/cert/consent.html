@@ -1,0 +1,127 @@
+{include file="public/header" /}
+<script src="__STATICBACKEND__/jscolor/jscolor.js"></script>
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+    .type_2{
+        display: none;
+    }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">领证方式</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="1" disabled {if $cert.type eq '1'} checked {/if} title="自取" lay-filter="type">
+            <input type="radio" name="type" value="2" disabled {if $cert.type eq '2'} checked {/if} title="邮寄" lay-filter="type">
+        </div>
+    </div>
+
+    <div class="layui-form-item type_2">
+        <label class="layui-form-label">客户姓名</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" value="{$student.name|default=''}" {if !empty($student.name)} readonly {/if}>
+        </div>
+    </div>
+    <div class="layui-form-item type_2">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" value="{$student.mobile|default=''}" {if !empty($student.mobile)} readonly {/if}>
+        </div>
+    </div>
+
+    {if(isset($$profession))}
+        <div class="layui-form-item type_2">
+            <label class="layui-form-label">工种</label>
+            <div class="layui-input-block">
+                <input type="text" class="layui-input" readonly value="{$profession.name}">
+            </div>
+        </div>
+    {/if}
+    <div class="layui-form-item type_2">
+        <label class="layui-form-label">邮寄地址</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="address" value="{$cert.address|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item type_2">
+        <label class="layui-form-label">邮寄单号</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="expressage_number" value="">
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+          {if(isset($id) && $id != 0)}
+          <input type="hidden" name='id' value="{$id|default=''}" >
+          {else}
+          <input type="hidden" name='batch' value="{$batch|default=''}" >
+          {/if}
+<!--        <button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">提交</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    {if $cert.type eq '2'}
+    $(".type_2").show();
+    {/if}
+    /* 监听提交 */
+    form.on('radio(type)', function(data){
+        if (data.value == 1){
+            $(".type_2").hide();
+        }else{
+            $(".type_2").show();
+        }
+    });
+    form.on('submit(addaction)', function(res){
+      var url = "{:url('cert/consent')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>
+<script>
+    $(document).ready( function() {
+      
+            $('.demo').each( function() {
+                //
+                // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                //
+                //  $(selector).minicolors();
+                //
+                // The way I've done it below is just for the demo, so don't get confused 
+                // by it. Also, data- attributes aren't supported at this time. Again, 
+                // they're only used for the purposes of this demo.
+                //
+        $(this).minicolors({
+          control: $(this).attr('data-control') || 'hue',
+          defaultValue: $(this).attr('data-defaultValue') || '',
+          inline: $(this).attr('data-inline') === 'true',
+          letterCase: $(this).attr('data-letterCase') || 'lowercase',
+          opacity: $(this).attr('data-opacity'),
+          position: $(this).attr('data-position') || 'bottom left',
+          change: function(hex, opacity) {
+            var log;
+            try {
+              log = hex ? hex : 'transparent';
+              if( opacity ) log += ', ' + opacity;
+              console.log(log);
+            } catch(e) {}
+          },
+          theme: 'default'
+        });
+                
+            });
+      
+    });
+  </script>

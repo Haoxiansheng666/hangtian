@@ -1,0 +1,111 @@
+{include file="public/header" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  .input_img_inline{
+    float: none !important;
+    width: 100px !important;
+  }
+  .layui-upload-list{
+      display: inline-block;
+  }
+  .icon_view, .layui-upload-img {
+      width: 80px;
+      height: 80px;
+  }
+    .ware_id_2{
+        display: none;
+    }
+  </style>
+<div class="jujue">
+    {if $accomplish.status eq '2'}
+    <div class="layui-form-item">
+        <label class="layui-form-label">拒绝原因</label>
+        <div class="layui-input-block">
+            <textarea disabled class="layui-textarea">{$accomplish['feedback']?$accomplish['feedback']:''}</textarea>
+        </div>
+    </div>
+    {/if}
+</div>
+<form class="layui-form"  style="margin-top:30px;width:80%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+     <div class="layui-form-item">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+          <input type="text" name="title" disabled placeholder="" class="layui-input" value="{$data['title']?$data['title']:''}">
+        </div>
+     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">通知人员</label>
+        <div class="layui-input-block">
+            <input type="radio" disabled {if empty($data.department_id) } checked {/if} name="ware_id" title="全部人员" value="1" lay-filter="ware_id">
+            <input type="radio" disabled {if !empty($data.department_id) } checked {/if} name="ware_id" title="部门" value="2" lay-filter="ware_id">
+        </div>
+    </div>
+    <div class="layui-form-item ware_id_2">
+        <label class="layui-form-label">通知部门</label>
+        <div class="layui-input-block">
+            <select id="department_id" name="department_id" disabled>
+                {foreach $department as $k => $v}
+                <option value="{$v.id}" {if !empty($data.department_id) && $data.department_id eq $v.id} selected {/if}>{$v.name}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <textarea   name="content"  id="content" disabled class="layui-textarea">{$data['content']?$data['content']:''}</textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开始时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled id="action_time" name="action_time" value="{$data.action_time_text|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled id="end_time" name="end_time" value="{$data.end_time_text|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea class="layui-textarea" name="remark" id="remark"></textarea>
+        </div>
+    </div>
+    <div id="question_limit" class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$data['id']?$data['id']:''}" id='hidden-id'>
+        <button id="save" class="layui-btn" lay-submit="" lay-filter="addaction">已完成</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,lay_date = layui.laydate
+    ,form = layui.form;
+
+    lay_date.render({
+        elem: '#action_time' //指定元素
+    });
+    lay_date.render({
+        elem: '#end_time' //指定元素
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(res){
+        $('#save').attr('disabled','true');
+      var url = "{:url('Task/end')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+</script>

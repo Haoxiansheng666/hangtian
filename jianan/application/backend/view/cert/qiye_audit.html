@@ -1,0 +1,225 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+  .layui-card-header.layuiadmin-card-header-auto {
+      padding-top: 12px;
+      padding-bottom: 8px;
+  }
+  .layui-table-cell{
+      height:40px;
+      line-height: 40px;
+  }
+    .search_date{
+        border: #e6e6e6 solid 1px;
+        padding: 7px 10px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto" >
+        <div class="layui-form-item search" >
+          <div class="layui-input-inline" style="width:180px;">
+              <input type="text" name="keyword" placeholder="企业名称/批次号/手机号" autocomplete="off" class="layui-input">
+          </div>
+          
+          <div class="layui-inline">
+            <button class="layui-btn  layui-btn-normal " data-type="reload">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="layui-card-body ">
+        <div style="margin-bottom: 8px;" class="search">
+                <button id="yilingzheng" class="layui-btn" data-type="yilingzheng">已领证</button>
+                <button id="weilingzheng" class="layui-btn" data-type="weilingzheng">未领证</button>
+<!--            <button class="layui-btn layui-btn-danger" data-type="getCheckData" ><i class="layui-icon">&#xe640;</i>删除</button>-->
+<!--          <button class="layui-btn" href="javascript:;" data-type="down" style="background-color:#CD950C;"><i class="layui-icon">&#xe601;</i>导出</button>-->
+<!--          <button class="layui-btn" href="javascript:;" data-type="leading" style="background-color:#4cc149;"><i class="layui-icon">&#xe601;</i>导入</button>-->
+<!--          <button class="layui-btn" data-type="add_data" style=""><i class="layui-icon">&#xe654;</i>添加</button>-->
+        </div>
+        <table id="layui-table" lay-filter="layui-table-tool"></table>
+        <script type="text/html" id="barTpl">
+            {{# if(d.status == '0'){ }}
+                {if in_array('95',$rule_ids)}
+                   <a class="layui-btn layui-btn-xs" lay-event="consent">同意</a>
+                {/if}
+                {if in_array('96',$rule_ids)}
+                    <a class="layui-btn layui-btn-xs" lay-event="refuse">拒绝</a>
+                {/if}
+            {{# } }}
+            <a class="layui-btn layui-btn-xs" lay-event="student">成员</a>
+
+        </script>
+        <script type="text/html" id="nameTpl">
+          {{ d.pay_student.name }}
+        </script>
+          <script type="text/html" id="mobileTpl">
+              {{ d.pay_student.mobile }}
+          </script>
+          <script type="text/html" id="adminTpl">
+              {{ d.pay_student.admin.real_name }}
+          </script>
+      </div>
+    </div>
+  </div> 
+  <script>
+    layui.use(['table', 'form','jquery'], function(){
+        var table = layui.table
+            , $ = layui.jquery
+            , form = layui.form;
+        //第一个实例
+        var ware_id = {$ware_id};
+        $("#yilingzheng").css({"background-color":'#FF5722'});
+        $("#weilingzheng").css({"background-color":''});
+        tableClick(ware_id)
+        function tableClick(ware_id) {
+            var where ;
+            if (ware_id == 1) {
+                where = {status: 1};
+                $("#yilingzheng").css({"background-color": '#FF5722'});
+                $("#weilingzheng").css({"background-color": ''});
+            } else {
+                where = {status: "-1,0"};
+                $("#yilingzheng").css({"background-color": ''});
+                $("#weilingzheng").css({"background-color": '#FF5722'});
+            }
+            table.render({
+                elem: '#layui-table'
+                , url: "{:Url('Cert/qiyeAuditData')}" //数据接口
+                // ,width: 892
+                //,height: 500
+                , height: 'full-180' //高度最大化减去差值
+                , page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    , curr: 1 //设定初始在第 5 页
+                    , groups: 5 //只显示 1 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+                }
+                , where: where
+                , limit: 15
+                , limits: [5, 12, 15, 30, 45, 60, 75, 90]
+                , cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    , {field: 'batch_number', title: '批次号'}
+                    , {field: 'company', title: '企业名称'}
+                    , {field: 'contact', title: '联系人'}
+                    , {field: 'mobile', title: '手机号'}
+                    , {field: 'status_text', title: '状态'}
+                    , {title: '操作', templet: '#barTpl', width: 180}
+                ]]
+                , id: 'tablereload'
+            });
+        }
+        var $ = layui.$, active = {
+          getCheckData: function(){ //获取选中数据
+            var checkStatus = table.checkStatus('tablereload')
+            ,data = checkStatus.data;
+            var delList=[];
+            data.forEach(function(n,i){
+                  delList.push(n.id);
+             });
+            if(delList==''){
+              layer.msg('未选择数据！',{icon: 2,time:2000});
+              return false;
+            };
+            layer.confirm('确认要删除吗？删除就无法恢复',function(){
+                var data1 = {did: delList};
+                var url = "{:Url('Customer/delete')}";
+                jqueryAjax('POST',url,data1,successReload); 
+            });
+          },
+            nextTime: function() {
+                var checkStatus = table.checkStatus('tablereload')
+                    ,data = checkStatus.data;
+                var delList=[];
+                data.forEach(function(n,i){
+                    delList.push(n.id);
+                });
+                if(delList==''){
+                    layer.msg('未选择数据！',{icon: 2,time:2000});
+                    return false;
+                };
+                layer.open({
+                    type:1,
+                    title:"设置下次时间",
+                    area:['500px','300px'],
+                    content:`
+                        <input type="date" name="next_time" value="" style="border: #8D8D8D solid 1px;margin: 10px ">
+                    `,btn: ['确认']
+                    ,yes: function(index, layero){
+                        var next_time = $("[name = 'next_time']").val();
+                        var data = {ids: delList,next_time:next_time};
+                        var url = "{:Url('Customer/nextTime')}";
+                        jqueryAjax('POST',url,data,successReload);
+                    }
+                });
+            },
+          reload: function(){
+              //执行重载
+              table.reload('tablereload', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      name: $('input[name="name"]').val(),
+                      mobile: $('input[name="mobile"]').val(),
+                      auid: $("#selectauid option:selected").val(),
+                      cate_id: $("#cate_id option:selected").val(),
+                      pid: $("#pid option:selected").val(),
+                      profession_id: $("#profession_id option:selected").val(),
+                      keyword: $('input[name="keyword"]').val(),
+                  }
+              });
+          },
+          add_data:function(){
+              var url = "{:url('Customer/add')}";
+              x_admin_show('添加客户信息',url);
+          },
+          yilingzheng: function(){
+              // //执行重载
+              // table.reload('tablereload', {
+              //     page: {curr: 1 //重新从第 1 页开始
+              //     },where: {status:1}
+              // });
+              ware_id = 1;
+              tableClick(ware_id);
+          },
+          weilingzheng: function(){
+              ware_id = 2;
+              tableClick(ware_id);
+          },
+        };
+        $('.search .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听工具条
+        table.on('tool(layui-table-tool)', function(obj){
+            iss = $(this);
+            if(obj.event === 'consent'){
+                layer.confirm('确认用户信息无误，通过审核？',function(index){
+                    var id = obj.data.batch_number
+                    var url = "{:Url('Cert/consent')}" + '?batch=' + id;
+                    x_admin_show('邮寄单号',url,600,400);
+                });
+            }else if(obj.event === 'refuse'){
+                var id = obj.data.batch_number
+                var url = "{:Url('Cert/refuse')}" + '?batch=' + id;
+                x_admin_show('拒绝原因',url,600,400);
+            }else if(obj.event === 'student'){
+                var id = obj.data.batch_number
+                var url = "{:Url('cert/index_audit')}" + '?batch=' + id;
+                x_admin_show('学员管理',url,'80%','80%');
+            }
+        });
+    });
+  </script>
+</body>
+</html>
+

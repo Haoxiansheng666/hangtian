@@ -1,0 +1,64 @@
+<style>
+    .focus:focus{
+        border-color: #4397fd;
+        box-shadow: none;
+    }
+</style>
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('个人信息')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div>
+                联系人员: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.contact|htmlentities}">
+                联系电话: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.mobile|htmlentities}">
+            </div>
+           <div>
+               身份证号: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.ident|htmlentities}">
+               注册时间: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{:datetime($row.create_time)}">
+           </div>
+           <div>
+               用户头像  <img width="12%" src="{:$row.user.avatar ? $row.user.avatar : request()->domain().'/assets/img/avatar.png'}">
+           </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('基本信息')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div>
+                企业名称: <input style="border: 1px solid #ccc" class="focus" readonly name="row[company]" type="text" value="{$row.company|htmlentities}">
+                证件类型: <input style="border: 1px solid #ccc" class="focus" readonly name="row[cert_type]" type="text" value="{$row.cert_type|htmlentities}">
+            </div>
+           <div>
+               证件号码: <input style="border: 1px solid #ccc" class="focus" readonly name="row[code]" type="text" value="{$row.code|htmlentities}">
+               经营地址: <input style="border: 1px solid #ccc" class="focus" readonly name="row[address]" type="text" value="{$row.address}{$row.house}">
+           </div>
+           <div>
+               经营状态: <input style="border: 1px solid #ccc" class="focus" readonly name="row[open]" type="text" value="{:$row.open == 1 ? '营业' : '停业'}">
+               企业logo  <img width="12%" src="{:$row.logo ? $row.logo : request()->domain().'/assets/img/avatar.png'}">
+           </div>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('餐饮信息')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div>
+                餐饮类型: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.detail.type_text|htmlentities}">
+                联系人员: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.contact|htmlentities}">
+            </div>
+           <div>
+               经营地址: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.address|htmlentities}">
+               场所面积: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.detail.area|htmlentities}">
+           </div>
+            <div>
+                就餐位数: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.detail.number|htmlentities}">
+                排口数量: <input style="border: 1px solid #ccc" class="focus" readonly type="text" value="{$row.detail.count|htmlentities}">
+            </div>
+           <div>
+               发热功率: <input style="border: 1px solid #ccc" readonly type="text" value="{$row.detail.power|htmlentities}">
+           </div>
+        </div>
+    </div>
+</form>

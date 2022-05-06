@@ -1,0 +1,153 @@
+{include file="public/header" /}
+
+<style type="text/css">
+ html{
+    background-color:#fff;
+  }
+  .layui-tab-brief{
+    margin:30px 50px;
+  }
+  .layui-timeline{
+    margin-top:30PX; ; 
+  }
+
+</style>
+<blockquote class="layui-elem-quote" style="margin-top:36px;margin-left: 30px;">{$data['ress']->name}<a class="layui-btn layui-btn-normal layui-btn-sm " href="javascript:;"   style="float:right;" onclick="add_data('添加回访记录',{$data['ress']['id']});"><i class="layui-icon">&#xe654;</i>添加回访</a><a class="layui-btn  layui-btn-sm layui-btn-warm" href="{:url('Customer/index')}"   style="float:right;"><i class="layui-icon">&#xe65c;</i>返回列表</a></blockquote>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li>客户详情</li>
+    <li class="layui-this">回访记录</li>
+  </ul>
+  <div class="layui-tab-content" style="height: 100px;">
+    <div class="layui-tab-item ">
+      <form class="layui-form" style="margin-top:20px;">
+      <div class="layui-form-item">
+        <label class="layui-form-label">客户称呼<span class="reqcolor"></span></label>
+        <div class="layui-input-block">
+          <input type="text" name="name"  class="layui-input" lay-verify="required" value="{$data['ress']['name']?$data['ress']['name']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+          <input type="text" name="mobile"  class="layui-input" value="{$data['ress']['mobile']?$data['ress']['mobile']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">QQ</label>
+        <div class="layui-input-block">
+          <input type="text" name="qq"  class="layui-input" value="{$data['ress']['qq']?$data['ress']['qq']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">微信</label>
+        <div class="layui-input-block">
+          <input type="text" name="wx"  class="layui-input" value="{$data['ress']['wx']?$data['ress']['wx']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+          <label  class="layui-form-label">
+            客户地址
+          </label>
+          <div class="layui-input-block">
+              <input type="text" name="address"  class="layui-input" value="{$data['ress']['province']}{$data['ress']['city']}{$data['ress']['area']}" disabled>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">详细地址</label>
+        <div class="layui-input-block">
+          <input type="text" name="address"  class="layui-input" value="{$data['ress']['address']?$data['ress']['address']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">留言内容</label>
+          <div class="layui-input-block">
+              <textarea name="contents"  class="layui-textarea" disabled>{$data['ress']['contents']?$data['ress']['contents']:''}</textarea>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">客户分类<span style="color:red;"></span></label>
+          <div class="layui-input-block">
+            <input type="text"   class="layui-input" id="time1" placeholder="  请选择" value="{$data['ress']->hasFromone->name?$data['ress']->hasFromone->name:''}" disabled>
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <label class="layui-form-label">客户状态<span style="color:red;"></span></label>
+          <div class="layui-input-block">
+            <input type="text"   class="layui-input" id="time1" placeholder="  请选择" value="{$data['ress']->hasCateone->name?$data['ress']->hasCateone->name:''}" disabled>
+          </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+          <input type="number" name="ord"  class="layui-input"  value="{$data['ress']['ord']?$data['ress']['ord']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">创建时间</label>
+        <div class="layui-input-block">
+          <input type="text"   class="layui-input" id="time1" placeholder="  请选择" value="{$data['ress']['ctime']?$data['ress']['ctime']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">更新时间</label>
+        <div class="layui-input-block">
+          <input type="text"   class="layui-input" id="time1" placeholder="  请选择" value="{$data['ress']['uptime']?$data['ress']['uptime']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">跟进时间</label>
+        <div class="layui-input-block">
+          <input type="text"  name="warn_time"  class="layui-input" id="time1" placeholder="  请选择" value="{$data['ress']['warn_time']?$data['ress']['warn_time']:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">添加部门</label>
+        <div class="layui-input-block">
+          <input type="text"  name="warn_time"  class="layui-input" id="time1"  value="{$data['ress']->hasGroupone->group_name?$data['ress']->hasGroupone->group_name:''}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">添加员工</label>
+        <div class="layui-input-block">
+          <input type="text"    class="layui-input" value="{$data['ress']->hasAuone->real_name?$data['ress']->hasAuone->real_name:''}" disabled>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="layui-tab-item layui-show">
+      <ul class="layui-timeline">
+        <?php  if(isset($data['record'])){  ?>
+        {foreach $data['record'] as $k=> $v}
+        <li class="layui-timeline-item">
+          <i class="layui-icon layui-timeline-axis"></i>
+          <div class="layui-timeline-content layui-text">
+            <h3 class="layui-timeline-title">{$v->ctime}</h3>
+            <p>[<span style="font-weight:600;color:#{$v->hasCate->color?$v->hasCate->color:''};">{$v->hasCate->name?$v->hasCate->name:'未定义'}</span>]</p><br>
+            {$v->contents}
+            <ul>
+              <li>{$v->hasauone->real_name}</li>
+            </ul>
+          </div>
+        </li>
+        {/foreach}
+        <?php  } ?>
+        <li class="layui-timeline-item">
+          <i class="layui-icon layui-timeline-axis"></i>
+          <div class="layui-timeline-content layui-text">
+            <div class="layui-timeline-title">START</div>
+          </div>
+        </li>
+      </ul>  
+    </div>
+  </div>
+</div> 
+<script type="text/javascript">
+  function add_data(title,id){
+        var url = "{:url('Customer/addRecord')}"+ '?id=' + id;
+        x_admin_show(title,url,500,400);
+    }
+</script>
+{include file="public/footer" /}
+

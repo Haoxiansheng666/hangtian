@@ -1,0 +1,126 @@
+{include file="public/header" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+    .exp_default{
+        border-top: #8F938F dashed 1px;
+        padding: 40px;
+        width: 100%;
+    }
+  .exp_copy{
+        border-top: #8F938F dashed 1px;
+        padding: 40px;
+        width: 100%;
+    }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    {foreach $work_list as $k => $v}
+    <div class="exp_copy">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工作时间<span style="color:red;">*</span></label>
+            <div class="layui-input-inline">
+                <input type="date" class="layui-input action_time" name="action_time[{$k+1}]" value="{$v.action_time_text}" autocomplete="off">
+            </div>
+            <div class="layui-input-inline">
+                <input type="date" class="layui-input end_time" name="end_time[{$k+1}]" value="{$v.end_time_text}" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工作单位<span style="color:red;">*</span></label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input company" name="company[{$k+1}]" value="{$v.company}" autocomplete="off">
+            </div>
+            <span class="del_input_div">
+                删除工作经历
+            </span>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工作内容<span style="color:red;">*</span></label>
+            <div class="layui-input-block">
+                <textarea name="remark[{$k+1}]" class="layui-textarea remark">{$v.remark}</textarea>
+            </div>
+        </div>
+        <input type="hidden" name="exp_id[{$k+1}]" value="{$v.id}">
+    </div>
+    {/foreach}
+    <div class="exp_default">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工作时间<span style="color:red;">*</span></label>
+            <div class="layui-input-inline">
+                <input type="date" class="layui-input action_time" name="action_time[]" autocomplete="off">
+            </div>
+            <div class="layui-input-inline">
+                <input type="date" class="layui-input end_time" name="end_time[]" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工作单位<span style="color:red;">*</span></label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input company" name="company[]" autocomplete="off">
+            </div>
+            <span class="del_input_div">
+                删除工作经历
+            </span>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">工作内容<span style="color:red;">*</span></label>
+            <div class="layui-input-block">
+                <textarea name="remark[]" class="layui-textarea remark"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$id}" id='hidden-id'>
+        <button class="layui-btn" type="button" lay-submit="" lay-filter="add_exp">增加工作经历</button>
+        <button class="layui-btn" type="button" lay-submit="" lay-filter="addaction">保 存</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+        ,laydate = layui.laydate
+    ,form = layui.form;
+    /* 监听提交 */
+    form.on('submit(addaction)', function(){
+      var url = "{:url('LabourUser/work_exp')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    /* 监听提交 */
+    form.on('submit(add_exp)', function(){
+        var d = $(".exp_default");
+        var temp = d.prop('outerHTML');
+        d.removeClass('exp_default');
+        d.addClass('exp_copy');
+        var l = $(".exp_copy").siblings().length;
+        if (l < 1){
+            l = 1;
+        }
+        for (var i=1; i <= l; i++){
+            d.find('.action_time').attr('name','action_time['+i+']')
+            d.find('.end_time').attr('name','end_time['+i+']')
+            d.find('.company').attr('name','company['+i+']')
+            d.find('.remark').attr('name','remark['+i+']')
+        }
+        d.after(temp);
+
+    });
+    $(document).on('click','.del_input_div',function () {
+        var d = $(this).parents('.exp_copy');
+        if (d.length < 1){
+            layer.msg('不能删除未填写的工作经历');
+            return false;
+        }
+        d.remove();
+    })
+  });
+
+</script>

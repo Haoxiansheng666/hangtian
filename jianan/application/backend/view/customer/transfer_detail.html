@@ -1,0 +1,169 @@
+{include file="public/header" /}
+
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+</style>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">转让申请记录</li>
+    </ul>
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户称呼<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$info.customer.name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户手机号<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$info.customer.mobile}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">旧业务员<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$info.old_admin.real_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新业务员<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$info.admins.real_name}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">转让原因<span class="reqcolor"></span></label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" disabled>{$info.transfer_cause}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item center-margin-top">
+                    <button class="layui-btn" onclick="tongyi()" title="同意" type="button"> 同意</button>
+                    <button class="layui-btn" onclick="jujue()" title="拒绝" type="button"> 拒绝</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var id = "{$info.id}";
+    function tongyi() {
+        layer.confirm('确认用户信息无误，通过审核？', function (index) {
+            var data = {id: id};
+            var url = "{:Url('Customer/transfer_tongyi')}";
+            jqueryAjax('POST', url, data, successReload);
+        });
+    }
+
+    function jujue() {
+        var url = "{:Url('Customer/transfer_jujue')}" + '?id=' + id;
+        x_admin_show('拒绝原因', url, 600, 400);
+    }
+</script>
+
+{include file="public/footer" /}
+<style>
+    .make_div {
+        margin: 20px 0;
+    }
+
+    .make_text {
+        width: 70%;
+    }
+
+    .make_title {
+        float: left;
+        line-height: 38px;
+        width: 75px;
+    }
+
+    .make_select {
+        width: 70%;
+        border-color: #E6E6E6;
+    }
+</style>
+<div id="select_admin" style="display: none ;margin: 10px 0 0 50px">
+    <div class="make_div">
+        <div class="make_title">部门</div>
+        <select class="make_select layui-select" id='selectgroup' lay-search='' name='admin_group' onchange="admin()"
+                style="width: 70%"></select>
+    </div>
+    <div class="make_div">
+        <div class="make_title">部门人员</div>
+        <select class="make_select layui-select" id='selectauid' lay-search='' name='auid' style="width: 70%"></select>
+    </div>
+    <div class="make_div">
+        <div class="make_title">转让原因</div>
+        <textarea class="make_text" id="transfer_cause" name="transfer_cause" rows="10"></textarea>
+    </div>
+    <script>
+        layui.use(['table', 'form'], function () {
+            var form = layui.form
+                , department_id = '';
+            $.ajax({
+                url: "{:url('AdminUsers/make_over_department')}",
+                dataType: "JSON",
+                method: "POST",
+                success: function (res) {
+                    let data = res.data
+                    let t = '';
+                    for (let i = 0; i < data.length; i++) {
+                        if (i == 0) {
+                            department_id = data[i]['id'];
+                        }
+                        t += "<option value='" + data[i]['id'] + "'> " + data[i]['name'] + "</option>";
+                    }
+                    $("#selectgroup").append(t);
+                    admin(department_id)
+                }
+            });
+
+
+        });
+
+        function admin(department_id = '') {
+            if (department_id == '') {
+                department_id = $("#selectgroup option:selected").val();
+            }
+            $.ajax({
+                url: "{:url('AdminUsers/make_over_admin')}",
+                data: {department_id: department_id},
+                dataType: "JSON",
+                method: "POST",
+                success: function (res) {
+                    $("#selectauid").empty();
+                    let data = res.data
+                    let t = '';
+                    for (let i = 0; i < data.length; i++) {
+                        t += "<option value='" + data[i]['id'] + "'> " + data[i]['real_name'] + "</option>";
+                    }
+                    $("#selectauid").append(t);
+                }
+            });
+        }
+    </script>
+</div>
+

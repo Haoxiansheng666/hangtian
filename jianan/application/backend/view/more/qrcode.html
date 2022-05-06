@@ -1,0 +1,35 @@
+{include file="public/header" /}
+<style type="text/css">
+ html{
+    background-color:#fff;
+  }
+</style>
+<form class="layui-form"  style="margin:100px 300px;" id="addform" >
+    <div class="layui-form-item">
+      <label class="layui-form-label">普通二维码<span class="reqcolor"></span></label>
+      <div class="layui-input-block">
+         <a class="layui-btn layui-btn-primary" href="javascript:;" onclick="get_qrcode()">点击生成</a>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">带logo的二维码<span class="reqcolor"></span></label>
+      <div class="layui-input-block">
+         <a class="layui-btn layui-btn-primary" href="javascript:;" onclick="get_qrcode_logo()">点击生成</a>
+      </div>
+    </div>
+</form>
+<script type="text/javascript">
+  function get_qrcode(){
+    var url = "{:url('More/get_qrcode')}";
+    var data ='';
+    jqueryAjax('POST',url,data,successBase);
+    return false;
+  }
+  function get_qrcode_logo(){
+    var url = "{:url('More/get_qrcode_logo')}";
+    var data ='';
+    jqueryAjax('POST',url,data,successBase);
+    return false;
+  }
+</script>
+{include file="public/footer" /}

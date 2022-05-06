@@ -1,0 +1,58 @@
+<!--index.wxml-->
+<view class="logo">
+    <image src="/static/image/24.png"></image>
+  </view>
+<view>
+    <view>
+        <!-- 头部导航 -->
+        <view class="nav_max">
+            <view class="nav_box">
+                <block wx:for="{{nvaList}}" wx:key="unique">
+                    <view class="navSub wx:if:'{{SelectNavID == item.id ? 'Select_' : ''}}' " bindtap="SelectNav" data-id='{{item.id}}'>{{item.title}}</view>
+                </block>
+            </view>
+            <view class="nav_box">
+                <block wx:for="{{nvaList}}" wx:key="unique">
+                    <view class="navSub_split  wx:if:'{{SelectNavID == item.id ? '' : 'navSub_split_'}}'"></view>
+                </block>
+            </view>
+        </view>
+        <!-- 内容 -->
+        <view class="subject">
+            <view class="sub_title">
+                <view class="sub_t_t">姓名</view>
+                <view class="sub_t_t">证书类别</view>
+                <view class="sub_t_t">到期时间</view>
+            </view>
+            <view class="sub_cent">
+                <block wx:for="{{indexList}}" wx:key="unique">
+                    <view bindtap="certificateDetails" data-id="{{item.id}}" class="sub_title sub_cent_ wx:if:{{(index+1) % 2 ?'scq':'sc'}}">
+                        <view class="sub_c_t">{{item.name}}</view>
+                        <view class="sub_c_t">{{item.cert_cate}}</view>
+                        <view class="sub_c_t">{{item.end_time}}</view>
+                    </view>
+                </block>
+            </view>
+        </view>
+    </view>
+    <view class="Mask" wx:if="{{popupShow}}"></view>
+    <view class="Popup" wx:if="{{popupShow}}">
+        <view class="pop1">温馨提示</view>
+        <view class="pop2">
+            <image wx:if="{{popupIndex == 1}}" src="/static/image/14.png"></image>
+            <image wx:if="{{popupIndex == 2}}" src="/static/image/15.png"></image>
+            <image wx:if="{{popupIndex == 3}}" src="/static/image/16.png"></image>
+        </view>
+        <view class="pop3">
+            您有证书还剩<text>{{popupIndex}}个月</text>到期请尽快前去更新</view>
+        <view class="pop4" bindtap="lookDetails">查看详情</view>
+        <view class="pop5" bindtap="close">
+            <image src="/static/image/17.png"></image>
+        </view>
+    </view>
+</view>
+
+<view class="isnull" wx:if="{{indexList == ''}}">
+  <image src="/static/image/null.png"></image>
+  <view>这里空空如也...</view>
+</view>

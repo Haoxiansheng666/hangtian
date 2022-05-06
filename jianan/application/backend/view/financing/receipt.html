@@ -1,0 +1,193 @@
+{include file="public/header" /}
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+</style>
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">发票信息</li>
+    </ul>
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+<!--                <div class="layui-form-item">-->
+<!--                    <label class="layui-form-label">客户称呼<span class="reqcolor"></span></label>-->
+<!--                    <div class="layui-input-block">-->
+<!--                        <input class="layui-input copy" readonly lay-verify="required" name="name" onclick="selectText()" type="text" value="{$data['ress']['pay_student']['name']?$data['ress']['pay_student']['name']:''}">-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">公司名称</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="company_name" type="text" value="{$data['ress']['company_name']?$data['ress']['company_name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开票金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="price" type="text" value="{$data['ress']['price']?$data['ress']['price']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">统一信用代码</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="credit_code" type="text" value="{$data['ress']['credit_code']?$data['ress']['credit_code']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="address" type="text" value="{$data['ress']['address']?$data['ress']['address']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="mobile" type="text" value="{$data['ress']['mobile']?$data['ress']['mobile']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户银行</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="bank_name" type="text" value="{$data['ress']['bank_name']?$data['ress']['bank_name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">银行账号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input copy" readonly name="bank_acount" type="text" value="{$data['ress']['bank_acount']?$data['ress']['bank_acount']:''}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="height: 50px;width: 100%;overflow: hidden"></div>
+    </div>
+
+</div>
+<div class="bg">
+    <img class="bgImg" style="max-width: 100%; max-height: 100%; position: fixed;" src="">
+</div>
+<style>
+    .layui-table-cell {
+        height: auto;
+
+        line-height: 28px;
+
+    }
+    .enlargeImg{
+        width: 20%;
+    }
+    .fillbg { background-color: rgba(0, 0, 0, 0.6); bottom: 0; height: 100%; left: 0; opacity: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 1100; display:none; }
+    .fillbg-active { opacity: 1; display:block; }
+</style>
+<script>
+    layui.use(['table', 'form'], function() {
+        var table = layui.table
+            , form = layui.form;
+        $('.image_max img').on('click', function () {
+            layer.photos({
+                photos: ".image_max",
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+        $('.image_max1 img').on('click', function () {
+            layer.photos({
+                photos: ".image_max1",
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+    })
+    var newImg;
+    var clientH=$(window).height();
+    var clientW=$(window).width();
+    var w = '250';
+    var h = '250';
+    $(document).ready(function(){
+        $(document).on('click','.enlargeImg',function () {
+            newImg = $(this)[0].src;
+            $("body").append('<div class="fillbg"></div>');
+            $(".fillbg").addClass("fillbg-active");
+            $('.bg').css({'position':"fixed","top":"5%",'display':"flex",'justify-content':'center','width':"100%",'z-index':1101});
+            $('.bgImg').css({'height': '90%','z-index':1101});
+            $('.bgImg').attr("src",newImg);
+        });
+        $(document).on('click','.bgImg',function () {
+            $(".fill-input").removeClass("fill-input-active");
+            setTimeout(function(){
+                $(".fillbg-active").removeClass("fillbg-active");
+                $(".fillbg").remove();
+            },300);
+            $('.bgImg').css({'width': '0px','height': '0px'});
+            $('.bgImg').attr("src",'');
+        });
+        // $(".enlargeImg").bind("click", function(){
+        //     newImg = $(this)[0].src;
+        //     $("body").append('<div class="fillbg"></div>');
+        //     $(".fillbg").addClass("fillbg-active");
+        //     $('.bgImg').css({'width': w+"px",'height': h+"px",'top':(clientH-h)/2+"px",'left':(clientW-w)/2+"px",'z-index':1101});
+        //     $('.bgImg').attr("src",newImg);
+        // });
+
+        // $(".bgImg").bind("click", function(){
+        //     $(".fill-input").removeClass("fill-input-active");
+        //     setTimeout(function(){
+        //         $(".fillbg-active").removeClass("fillbg-active");
+        //         $(".fillbg").remove();
+        //     },300);
+        //     $('.bgImg').css({'width': '0px','height': '0px'});
+        //     $('.bgImg').attr("src",'');
+        // });
+    });
+    var id = "{$data['ress']['id']}";
+    $(".tongyi").click(function () {
+        layer.confirm('确认用户信息无误，通过审核？',function(index){
+            var data = {id: id};
+            var url = "{:Url('Financing/receipt_tongyi')}";
+            jqueryAjax('POST',url,data,successReload);
+        });
+    });
+    $(".jujue").click(function () {
+        var url = "{:Url('Financing/receipt_jujue')}" + '?id=' + id;
+        x_admin_show('拒绝原因',url,600,400);
+    });
+
+    //点击复制操作
+    $('.copy').click(function (){
+        var text = $(this).val();
+        var name = $(this).parent().prev().text();
+        if(text == ''){
+            layer.msg(name + '无信息');return false;
+        }
+        $(this).value = text; // 修改文本框的内容
+        $(this).select(); // 选中文本
+        document.execCommand("copy"); // 执行浏览器复制命令
+        layer.msg(name + "复制成功");
+    })
+
+</script>
+
+{include file="public/footer" /}
+

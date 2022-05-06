@@ -1,0 +1,487 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+  .layui-card-header.layuiadmin-card-header-auto {
+      padding-top: 12px;
+      padding-bottom: 8px;
+  }
+  .layui-table-cell{
+      height:40px;
+      line-height: 40px;
+  }
+    .search_date{
+        border: #e6e6e6 solid 1px;
+        padding: 7px 10px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto" >
+        <div class="layui-form-item search" >
+          <div class="layui-input-inline" style="width:100px;">
+              <input type="text" name="name" placeholder="客户名称" autocomplete="off" class="layui-input">
+          </div>
+          <div class="layui-input-inline" style="width:180px;">
+              <input type="text" name="mobile" placeholder="手机号" autocomplete="off" class="layui-input">
+          </div>
+          <div class="layui-input-inline" style="width:100px;">
+              <select name="from" lay-search="" id="selectfrom">
+                <option value="">客户分类</option>
+                <option value="1">个人</option>
+                <option value="2">企业</option>
+              </select>
+          </div>
+            <div class="layui-input-inline" style="width:80px;">
+                <select name="status" lay-search="" id="status">
+                    <option value="">状态</option>
+                    <option value="0">未审核</option>
+                    <option value="1">审核通过</option>
+                    <option value="2">财务审核拒绝</option>
+                    <option value="3">待主管审核</option>
+                    <option value="4">财务主管拒绝</option>
+                    <option value="5">待老板审核</option>
+                    <option value="6">老板审核拒绝</option>
+                </select>
+            </div>
+
+            <div class="layui-input-inline" style="width:265px;">
+                <span style="float: left;margin: 0 10px;">创建时间</span>
+                <input type="date" name="action_time" class="search_date">
+
+            </div>
+            <div class="layui-input-inline" style="width:165px;">
+                <input type="date" name="end_time" class="search_date">
+            </div>
+          
+          <div class="layui-inline">
+            <button class="layui-btn  layui-btn-normal" data-type="reload">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="layui-card-body ">
+<!--          <div style="margin-bottom: 8px;" class="search">-->
+<!--              <button id="dsh" class="layui-btn" data-type="dsh" style="">待审核</button>-->
+<!--              <button id="shtg" class="layui-btn" data-type="shtg" style="">审核通过</button>-->
+<!--              <button id="shwtg" class="layui-btn" data-type="shwtg" style="">审核未通过</button>-->
+<!--          </div>-->
+        <table id="layui-table" lay-filter="layui-table-tool"></table>
+        <script type="text/html" id="barTpl">
+            {if in_array('171',$rule_ids)}
+          <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+            {/if}
+        </script>
+        <script type="text/html" id="cateTpl">
+          {{# if(d.cate_id == 0){ }}
+          普通客户
+          {{# }else{ }}
+          {{ d.cate.name }}
+          {{# } }}
+        </script>
+        <script type="text/html" id="adminTpl">
+          {{# if(!d.pay_student){ }}
+          {{ d.customer.admin.real_name }}
+          {{# }else{ }}
+          {{ d.pay_student.admin.real_name }}
+          {{# } }}
+        </script>
+          <script type="text/html" id="operateTpl">
+              {{ d.operate.real_name }}
+          </script>
+          <script type="text/html" id="zgTpl">
+              {{ d.zg.real_name }}
+          </script>
+          <script type="text/html" id="lbTpl">
+              {{ d.lb.real_name }}
+          </script>
+          <script type="text/html" id="rpTpl">
+              <a href="javascript:void (0);" class="example1"><img class="enlargeImg" src="{{ d.refund_proof }}" alt=""></a>
+          </script>
+          <script type="text/html" id="nameTpl">
+              {{# if(!d.pay_student){ }}
+              {{ d.customer.name }}
+              {{# }else{ }}
+              {{ d.pay_student.name }}
+              {{# } }}
+          </script>
+          <script type="text/html" id="mobileTpl">
+              {{# if(!d.pay_student){ }}
+              {{ d.customer.mobile }}
+              {{# }else{ }}
+              {{ d.pay_student.mobile }}
+              {{# } }}
+          </script>
+          <script type="text/html" id="fromTpl">
+              {{# if(!d.pay_student){ }}
+              {{ d.customer.from_text }}
+              {{# }else{ }}
+              {{ d.pay_student.from_text }}
+              {{# } }}
+          </script>
+          <script type="text/html" id="professionTpl">
+              {{# if(typeof(d.profession) == 'undefined' || d.profession == '' || d.profession == null){ }}
+              未选择工种
+              {{# }else{ }}
+              {{ d.profession.name }}
+              {{# } }}
+          </script>
+      </div>
+    </div>
+  </div>
+<div class="bg">
+    <img class="bgImg" style="max-width: 100%; max-height: 100%; position: fixed;" src="">
+</div>
+<style>
+    .layui-table-cell {
+        height: auto;
+
+        line-height: 28px;
+
+    }
+    .fillbg { background-color: rgba(0, 0, 0, 0.6); bottom: 0; height: 100%; left: 0; opacity: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 1100; display:none; }
+    .fillbg-active { opacity: 1; display:block; }
+</style>
+<script src="/lib/js/jquery.imgbox.pack.js"></script>
+  <script>
+      layui.use(['table', 'form','jquery'], function(){
+          var table = layui.table
+              , $ = layui.jquery
+              , form = layui.form;
+          var ware_id = {$ware_id};
+          var batch = {$batch};
+          $("#dsh").css({"background-color":'#FF5722'});
+          $("#shtg").css({"background-color":''});
+          $("#shwtg").css({"background-color":''});
+          tableClick(ware_id)
+        //第一个实例
+        function tableClick(ware_id) {
+            var where;
+            if(ware_id == 1){
+                if(batch != 0){
+                    where = {status:0,batch:batch};
+                }else{
+                    where = {status:0,from:1};
+                }
+                $("#dsh").css({"background-color":'#FF5722'});
+                $("#shtg").css({"background-color":''});
+                $("#shwtg").css({"background-color":''});
+            }else if (ware_id == 2){
+                if(batch != 0){
+                    where = {status:1,batch:batch};
+                }else{
+                    where = {status:1,from:1};
+                }
+                $("#dsh").css({"background-color":''});
+                $("#shtg").css({"background-color":'#FF5722'});
+                $("#shwtg").css({"background-color":''});
+            }else{
+                if(batch != 0){
+                    where = {status:2,batch:batch};
+                }else{
+                    where = {status:2,from:1};
+                }
+                $("#dsh").css({"background-color":''});
+                $("#shtg").css({"background-color":''});
+                $("#shwtg").css({"background-color":'#FF5722'});
+            }
+            table.render({
+                elem: '#layui-table'
+                ,url: "{:Url('Financing/getRefundLogData')}" //数据接口
+                // ,width: 892
+                //,height: 500
+                ,where:where
+                ,height: 'full-180' //高度最大化减去差值
+                ,page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    ,curr: 1 //设定初始在第 5 页
+                    ,groups: 5 //只显示 1 个连续页码
+                    ,first: false //不显示首页
+                    ,last: false //不显示尾页
+                }
+                ,limit:15
+                ,limits:[5,12,15,30,45,60,75,90]
+                ,cols: [[ //表头
+                    // {type:'checkbox',fixed: 'left'},
+                    {field: 'id', title: '编号', width:70}
+                    ,{title: '客户名称', templet: '#nameTpl',width:90}
+                    ,{title: '手机号', templet: '#mobileTpl',width:120}
+                    ,{title: '业务员', templet: '#adminTpl',width:90}
+                    ,{title: '客户分类', templet: '#fromTpl',width:90}
+                    ,{field: 'pay_price', title: '退费金额',width:100 }
+                    ,{field: 'bank_name', title: '开户银行' }
+                    ,{field: 'bank_number', title: '银行卡号' }
+                    ,{field: 'status_text', title: '状态' ,width:100}
+                    // ,{field: 'create_time_text', title: '创建时间' }
+                    ,{title: '操作', templet: '#barTpl',width:100}
+                ]]
+                ,id: 'tablereload'
+            });
+        }
+        var $ = layui.$, active = {
+          getCheckData: function(){ //获取选中数据
+            var checkStatus = table.checkStatus('tablereload')
+            ,data = checkStatus.data;
+            var delList=[];
+            data.forEach(function(n,i){
+                  delList.push(n.id);
+             });
+            if(delList==''){
+              layer.msg('未选择数据！',{icon: 2,time:2000});
+              return false;
+            };
+            layer.confirm('确认要删除吗？删除就无法恢复',function(){
+                var data1 = {did: delList};
+                var url = "{:Url('Customer/delete')}";
+                jqueryAjax('POST',url,data1,successReload); 
+            });
+          },
+            nextTime: function() {
+                var checkStatus = table.checkStatus('tablereload')
+                    ,data = checkStatus.data;
+                var delList=[];
+                data.forEach(function(n,i){
+                    delList.push(n.id);
+                });
+                if(delList==''){
+                    layer.msg('未选择数据！',{icon: 2,time:2000});
+                    return false;
+                };
+                layer.open({
+                    type:1,
+                    title:"设置下次时间",
+                    area:['500px','300px'],
+                    content:`
+                        <input type="date" name="next_time" value="" style="border: #8D8D8D solid 1px;margin: 10px ">
+                    `,btn: ['确认']
+                    ,yes: function(index, layero){
+                        var next_time = $("[name = 'next_time']").val();
+                        var data = {ids: delList,next_time:next_time};
+                        var url = "{:Url('Customer/nextTime')}";
+                        jqueryAjax('POST',url,data,successReload);
+                    }
+                });
+            },
+          reload: function(){
+              var auid = $("#selectauid option:selected").val(),
+                  from_val = $("#selectfrom option:selected").val();
+              if (auid && from_val == ''){
+                layer.msg('若查询业务员，请选择客户分类');
+                return false;
+              }
+              //执行重载
+              table.reload('tablereload', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      name: $('input[name="name"]').val(),
+                      mobile: $('input[name="mobile"]').val(),
+                      from: from_val,
+                      auid: auid,
+                      action_time: $("input[name='action_time']").val(),
+                      end_time: $("input[name='end_time']").val(),
+                      status: $("#status option:selected").val(),
+                  }
+              });
+          },
+          add_data:function(){
+              var url = "{:url('Customer/add')}";
+              x_admin_show('添加客户信息',url,1100,800);
+          },
+          down:function(){
+              var name=$('input[name="name"]').val();
+              var mobile=$('input[name="mobile"]').val();
+              var province=$('input[name="province"]').val();
+              var city=$('input[name="city"]').val();
+              var from=$("#selectfrom option:selected").val(); 
+              var cate_id=$("#selectcateid option:selected").val(); 
+              var auid=$("#selectauid option:selected").val(); 
+              var url = "{:url('Customer/down')}"+ '?name=' + name+'&mobile='+ mobile+'&province='+ province+'&city='+ city+'&cate_id='+ cate_id+'&from='+ from+'&auid='+ auid;
+              location.href=url;
+          },
+          leading:function(){
+              var url = "{:url('Customer/leading')}";
+              x_admin_show('导入客户信息',url,400,300);
+          },dsh:function (){
+                ware_id = 1;
+                tableClick(ware_id);
+
+            },shtg:function (){
+                ware_id = 2;
+                tableClick(ware_id);
+
+            },shwtg:function (){
+                ware_id = 3;
+                tableClick(ware_id);
+
+            },
+        };
+        $('.search .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听工具条
+        table.on('tool(layui-table-tool)', function(obj){
+            iss = $(this);
+            if(obj.event === 'detail'){
+                var id = obj.data.id
+                var url = "{:Url('Financing/refund_detail')}" + '?id=' + id;
+                x_admin_show('详情',url,1100,800);
+            }else if(obj.event === 'tongyi'){
+                layer.confirm('请确定同意此条财务审核',function(index){
+                    var url = "{:Url('Financing/refund_tongyi')}";
+                    var data = {id:obj.data.id};
+                    jqueryAjax('POST',url,data,successReload);
+                });
+
+            }else if(obj.event === 'jujue'){
+                layer.confirm('请确定拒绝此条财务审核',function(index){
+                    let id = obj.data.id;
+                    var url = "{:Url('Financing/refund_jujue')}" + "?id="+id;
+                    layer.close(index);
+                    x_admin_show('拒绝财务审核原因',url,600,400);
+                });
+            }
+
+        });
+// 工种一级栏目
+        form.on('select(cate_id)', function(data){
+            let v = data.value;
+            var pid;
+            $.ajax({
+                type:"POST",
+                url:"{:url('Profession/selectData')}",
+                data: {cate_id : data.value},
+                dataType:"json",
+                success:function(res){
+                    if (res.code == 1){
+                        let list = res.data;
+                        $("#pid").empty();
+                        var t;
+                        for (let i=0; i < list.length; i++){
+                            if (i == 0){
+                                pid = list[i]['id'];
+                            }
+                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                        }
+                        if (pid){
+                            $.ajax({
+                                type:"POST",
+                                url:"{:url('Profession/selectSonData')}",
+                                data: {cate_id : pid},
+                                dataType:"json",
+                                success:function(res){
+                                    if (res.code == 1){
+                                        let list = res.data;
+                                        $("#profession_id").empty();
+                                        var t;
+                                        for (let i=0; i < list.length; i++){
+                                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                                        }
+                                        $("#profession_id").append(t);
+                                        // 添加完记得render下  否则不会刷新到页面中
+                                        form.render('select');
+                                    }else{
+                                        $("#profession_id").empty();
+                                    }
+                                },
+                                error:function(res){
+                                    $("#profession_id").empty();
+                                    return false;
+                                }
+                            });
+                        }
+                        $("#pid").append(t);
+                        // 添加完记得render下  否则不会刷新到页面中
+                        form.render('select');
+                    }else{
+                        $("#pid").empty();
+                    }
+                },
+                error:function(res){
+                    $("#pid").empty();
+                    return false;
+                }
+            });
+
+        });
+        // 工种列表
+        form.on('select(pid)', function(data){
+            let v = data.value;
+            $.ajax({
+                type:"POST",
+                url:"{:url('Profession/selectSonData')}",
+                data: {cate_id : data.value},
+                dataType:"json",
+                success:function(res){
+                    if (res.code == 1){
+                        let list = res.data;
+                        $("#profession_id").empty();
+                        var t;
+                        for (let i=0; i < list.length; i++){
+                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                        }
+                        $("#profession_id").append(t);
+                        // 添加完记得render下  否则不会刷新到页面中
+                        form.render('select');
+                    }else{
+                        $("#profession_id").empty();
+                    }
+                },
+                error:function(res){
+                    $("#profession_id").empty();
+                    return false;
+                }
+            });
+        });
+    });
+
+    var newImg;
+    var clientH=$(window).height();
+    var clientW=$(window).width();
+    var w = '250';
+    var h = '250';
+    $(document).ready(function(){
+        $(document).on('click','.enlargeImg',function () {
+            newImg = $(this)[0].src;
+            $("body").append('<div class="fillbg"></div>');
+            $(".fillbg").addClass("fillbg-active");
+            $('.bgImg').css({'width': w+"px",'height': h+"px",'top':(clientH-h)/2+"px",'left':(clientW-w)/2+"px",'z-index':1101});
+            $('.bgImg').attr("src",newImg);
+        });
+        $(document).on('click','.bgImg',function () {
+            $(".fill-input").removeClass("fill-input-active");
+            setTimeout(function(){
+                $(".fillbg-active").removeClass("fillbg-active");
+                $(".fillbg").remove();
+            },300);
+            $('.bgImg').css({'width': '0px','height': '0px'});
+            $('.bgImg').attr("src",'');
+        });
+        // $(".enlargeImg").bind("click", function(){
+        //     newImg = $(this)[0].src;
+        //     $("body").append('<div class="fillbg"></div>');
+        //     $(".fillbg").addClass("fillbg-active");
+        //     $('.bgImg').css({'width': w+"px",'height': h+"px",'top':(clientH-h)/2+"px",'left':(clientW-w)/2+"px",'z-index':1101});
+        //     $('.bgImg').attr("src",newImg);
+        // });
+
+        // $(".bgImg").bind("click", function(){
+        //     $(".fill-input").removeClass("fill-input-active");
+        //     setTimeout(function(){
+        //         $(".fillbg-active").removeClass("fillbg-active");
+        //         $(".fillbg").remove();
+        //     },300);
+        //     $('.bgImg').css({'width': '0px','height': '0px'});
+        //     $('.bgImg').attr("src",'');
+        // });
+    });
+  </script>
+</body>
+</html>
+

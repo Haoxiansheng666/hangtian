@@ -1,0 +1,39 @@
+{include file="public/header" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注信息<span style="color:red;">*</span></label>
+        <div class="layui-input-block">
+            <textarea name="remark" placeholder="请输入内容" class="layui-textarea" lay-verify="required"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$id}" id='hidden-id'>
+        <input  type="hidden" name='type' value="{$type}" id='type'>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+    /* 监听提交 */
+    form.on('submit(addaction)', function(){
+      var url = "{:url('ContactStudent/refuse')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>

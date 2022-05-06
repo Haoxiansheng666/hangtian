@@ -1,0 +1,96 @@
+.split {
+  height: 1rpx;
+  background-color: #f6f6f6;
+}
+
+.SaveBtn {
+  width: 690rpx !important;
+  height: 80rpx !important;
+  background-color: #1684FC;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 48rpx;
+  position: fixed;
+  bottom: 89rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ChangeCent {
+  margin-left: 28rpx;
+  margin-top: 35rpx;
+}
+
+.ChangeCent .cc_ipt {
+  width: 690rpx;
+  height: 80rpx;
+  border-radius: 10rpx;
+  background: #ffffff;
+  border: 1rpx solid #e1e1e1;
+  margin-bottom: 39rpx;
+  position: relative;
+}
+
+.ChangeCent .cc_ipt .picker {
+  line-height: 80rpx;
+  margin: 0rpx 27rpx;
+  font-size: 24rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #999999;
+}
+.cc_ipt image{
+  width: 20rpx;
+  height: 12rpx;
+  position: absolute;
+  right: 31rpx;
+  bottom: 34rpx;
+}
+.ChangeCent .cc_ipt input {
+  line-height: 80rpx;
+  margin: 16rpx 27rpx;
+  font-size: 24rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #999999;
+}
+
+.ChangeCent .cc_name {
+  font-size: 32rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 19rpx;
+}
+
+.ChangeHead {
+  display: flex;
+  background-color: #f6f6f6;
+  width: 690rpx;
+  height: 180rpx;
+  border-radius: 16rpx;
+  margin: 21rpx auto;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ChangeHead .ch_img {
+  margin-right: 44rpx;
+}
+
+.ChangeHead .ch_img image {
+  width: 108.6rpx;
+  height: 108.6rpx;
+  border-radius: 50%;
+}
+
+.ChangeHead .ch_name {
+  font-size: 32rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #333333;
+  margin-left: 29rpx;
+}

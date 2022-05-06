@@ -1,0 +1,68 @@
+<view>
+    <!-- 头部个人内容 -->
+    <view class="myDetails">
+        <view class="md_box">
+            <view class="md_head">
+                <view class="">
+                    <image src="{{myDetail.avatar}}" />
+                </view>
+                <view class="mdh_cent">
+                    <view class="mdh_name">{{myDetail.nickname}}</view>
+                    <!-- <view class="mdg_dge">简单介绍一下吧...</view> -->
+                </view>
+            </view>
+            <view class="md_img" bindtap="myDetails">
+                <image src="/static/image/11.png" />
+            </view>
+        </view>
+        <view class="md_btm">
+            <view class="mdb_le">
+                <view class="mdb_img">
+                    <image src="/static/image/2.png" />
+                </view>
+                <view>
+                    <view class="mdb_name">{{myDetail.num}}</view>
+                    <view class="mdb_ds">在职人数</view>
+                </view>
+            </view>
+            <view class="mdb_split"></view>
+            <view class="mdb_rg">
+                <view class="mdb_img">
+                    <image src="/static/image/3.png" />
+                </view>
+                <view>
+                    <view class="mdb_name">{{myDetail.social_num}}</view>
+                    <view class="mdb_ds">缴纳社保人数</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!-- 链接内容 -->
+    <view class="mySubject">
+        <block wx:for="{{dataList}}" wx:key="unique">
+            <view class="mys_vi" bindtap="functionalArea" data-index="{{index}}">
+                <view class="mysv_lf">
+                    <image src="{{item.url}}" />
+                </view>
+                <view class="mysv_mid">{{item.name}}</view>
+                <view class="mysv_rg">
+                    <image src="/static/image/12.png" />
+                </view>
+            </view>
+        </block>
+    </view>
+    <!-- 底部内容 -->
+     <view class="mySubject">
+        <block wx:for="{{btmDataList}}" wx:key="unique">
+            <view class="mys_vi" bindtap="functionalBtom" data-index="{{index}}">
+                <view class="mysv_lf">
+                    <image src="{{item.url}}" />
+                </view>
+                <view class="mysv_mid">{{item.name}}</view>
+                <view class="mysv_rg">
+                    <image src="/static/image/12.png" />
+                </view>
+            </view>
+        </block>
+    </view>
+</view>

@@ -1,0 +1,40 @@
+<view class="hqsq" wx:if="{{loginS}}">
+  <view class="logo">
+    <image src="/static/image/24.png"></image>
+  </view>
+  <view class="HQ1">
+    <image src="/static/image/21.png"></image>
+  </view>
+  <view class="HQ2">
+    <image src="/static/image/23.png"></image>
+  </view>
+  <button bindtap="getUserProfile"> 获取头像昵称 </button>
+  <image src="/static/image/18.png"></image>
+</view>
+
+<view class="login" wx:else>
+  <view wx:if="{{bPhone == ''}}">
+    <view class="lg1">绑定手机号</view>
+    <view class="lg2">为了更好的服务，请绑定您的手机号</view>
+  </view>
+  <view wx:else class="yph">
+    <view class="y_quit" bindtap="quits">
+      <image src="/static/image/20.png"></image>
+    </view>
+    <view class="lg3">原手机号</view>
+    <view class="lg4">
+      <input type="number" value="{{bPhone}}" disabled />
+    </view>
+  </view>
+  <view class="lg3">{{bPhone == ''?'手机号':'新手机号'}}</view>
+  <view class="lg4">
+    <input type="number" value="{{uPhone}}" data-phone="phone" bindinput="ChangePhone" placeholder="请输入手机号" />
+  </view>
+  <view class="lg5">验证码</view>
+  <view class="lg6">
+    <input type="number" value="{{UCode}}" bindinput="ChangeCode" placeholder="请输入验证码" />
+    <view bindtap="getCode">{{nums}}</view>
+  </view>
+
+  <view class="lg7" bindtap="entSave">确定</view>
+</view>

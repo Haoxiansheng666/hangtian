@@ -1,0 +1,46 @@
+.pad {
+  width: 690rpx;
+  height: 225rpx;
+  background-color: white;
+  margin: 29rpx auto;
+  border-radius: 10rpx;
+}
+
+page {
+  background-color: #f6f6f6;
+}
+
+.urlt {
+  font-size: 32rpx;
+  font-family: OPPOSans;
+  font-weight: 500;
+  color: #333333;
+  padding: 39rpx 0 0 41rpx;
+}
+
+.url text {
+  width: 77rpx;
+  height: 40rpx;
+  display: inline-block;
+  border: 1rpx solid;
+  text-align: center;
+  font-size: 22rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  color: #333333;
+  line-height: 40rpx;
+  margin-left: 20rpx; 
+  background: #F6F6F6;
+  border: 1rpx solid #DCDCDC;
+  border-radius: 10rpx;
+}
+
+.url {
+  padding: 28rpx 0 0 39rpx;
+  font-size: 28rpx;
+  font-family: OPPOSans;
+  font-weight: 400;
+  text-decoration: underline;
+  color: #1684FC;
+  line-height: 50rpx;
+}

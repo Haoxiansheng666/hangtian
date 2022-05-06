@@ -1,0 +1,146 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+    .hide_i{
+        margin: 0 10px;
+        display: inline-block;
+    }
+</style>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                权限列表
+                <a href="javascript:;"  class="layui-btn layui-btn-sm layui-btn-normal" onclick="add_data('添加顶级权限',0)" style="float:right;margin-top: 10px;">添加顶级权限</a>
+            </div>
+
+            <div class="layui-card-body">
+                <table class="layui-table">
+                  <thead>
+                    <tr>
+                        <th width="">ID</th>
+                        <th width="">权限名</th>
+                        <th width="">权限路由</th>
+                        <th width="">图标</th>
+                        <th width="">排序</th>
+                        <th width="">状态</th>
+                        <th width="">操作</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                     {foreach $data as $vo}
+                    <tr class="text-c one-text-hidden-{$vo.id}" id="{$vo.id}">
+                        <td class="text-left">{$vo.id} </td>
+                        <td class="text-left">{$vo.title} </td>
+                        <td>{$vo.name}</td>
+                        <td><i class="layui-icon {$vo.icon}"></i>  </td>
+                        <td>{$vo.ord}</td>
+                        <td><span class="label {$vo['status']==1? 'label-success':'label-default'}  radius">{$vo['status']==1? '已启用' : '已禁用'}</span></td>
+                        <td>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="add_data('添加子权限',{$vo.id})"><i class="layui-icon">&#xe654;</i></button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="edit_data('修改权限',{$vo.id})" ><i class="layui-icon">&#xe642;</i></button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm"  onclick="del({$vo.id})"><i class="layui-icon">&#xe640;</i></button>
+                        </td>
+                    </tr>
+                    <?php  if(isset($vo['son'])){  ?>
+                    {foreach $vo.son as $vson}
+                    <tr class="text-c text-hidden-{$vo.id}" id="{$vson.id}">
+                        <td class="text-left">{$vson.id} </td>
+                        <td class="text-left">|——{$vson.title}</td>
+                        <td>{$vson.name}</td>
+                        <td></td>
+                        <td>{$vson.ord}</td>
+                        <td><span class="label {$vson['status']==1? 'label-success':'label-default'}  radius">{$vson['status']==1? '已启用' : '已禁用'}</span></td>
+                        <td>
+                             <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="add_data('添加子权限',{$vson.id})"><i class="layui-icon">&#xe654;</i></button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="edit_data('修改权限',{$vson.id})" ><i class="layui-icon">&#xe642;</i></button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="del({$vson.id})"><i class="layui-icon" >&#xe640;</i></button>
+                        </td>
+                    </tr>
+                        <?php  if(isset($vson['son'])){  ?>
+                        {foreach $vson.son as $pson}
+                        <tr class="text-c text-hidden-{$vson.id}">
+                            <td class="text-left">{$pson.id} </td>
+                            <td class="text-left">|————{$pson.title}</td>
+                            <td>{$pson.name}</td>
+                            <td></td>
+                            <td>{$pson.ord}</td>
+                            <td><span class="label {$pson['status']==1? 'label-success':'label-default'}  radius">{$pson['status']==1? '已启用' : '已禁用'}</span></td>
+                            <td>
+                                <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="edit_data('修改权限',{$pson.id})" ><i class="layui-icon">&#xe642;</i></button>
+                                <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="del({$pson.id})"><i class="layui-icon" >&#xe640;</i></button>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        <?php  } ?>
+                    {/foreach}
+                    <?php  } ?>
+                {/foreach}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script type="text/javascript">
+        function add_data(title,id){
+            var url = "{:url('Rule/ruleadd')}"+ '?pid=' + id;
+            x_admin_show(title,url,400,480);
+        }
+        function edit_data(title,id){
+            var url = "{:url('Rule/ruleadd')}"+ '?id=' + id;
+            x_admin_show(title,url,400,480);
+        }
+        function del(id){
+            layer.confirm('确认要删除吗？',function(index){
+                var url = "{:url('rule/ruleDelete')}";
+                jqueryAjax('POST',url,{id:id},successReload);
+            });
+        }
+        $(".one_hide").click(function () {
+            let id = $(this).parents('tr').attr('id');
+            let icon = $(this).find('i');
+            // 下级类名
+            let attrs = 'text-hidden-' + id;
+            // 获取所有下级的id
+            var two_list = $('tr').filter('.' + attrs);
+            var id_list = [];
+            two_list.each(function (index, row) {
+                id_list.push(row.id)
+            })
+            // 隐藏所有第三级的元素
+            let len1 = id_list.length
+            for (var i=0; i < len1; i++){
+                let attrs_son = 'text-hidden-' + id_list[i];
+                $('.' + attrs_son).hide()
+            }
+            // 隐藏下级元素
+            $("." + attrs).hide()
+            // 修改i标签内容
+            icon.removeClass('layui-icon-up');
+            icon.addClass('layui-icon-down');
+            // 修改父级元素类名
+            $(this).removeClass('one_hide');
+            $(this).addClass('one_show')
+        });
+        $(document).on('click','.one_show',function () {
+            let id = $(this).parents('tr').attr('id');
+            let icon = $(this).find('i');
+            // 下级类名
+            let attrs = 'text-hidden-' + id;
+            // 显示下级元素
+            $("." + attrs).show()
+            // 修改i标签内容
+            icon.removeClass('layui-icon-down');
+            icon.addClass('layui-icon-up');
+            // 修改父级元素类名
+            $(this).removeClass('one_show');
+            $(this).addClass('one_hide')
+        });
+    </script>
+{include file="public/footer" /}
+

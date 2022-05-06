@@ -1,0 +1,131 @@
+{include file="public/header" /}
+<script src="__STATICBACKEND__/jscolor/jscolor.js"></script>
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+</style>
+<form class="layui-form"  style="margin-top:30px;width:90%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户姓名</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled name="name" value="{$data.user.name|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled name="mobile" value="{$data.user.mobile|default=''}" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled name="gender" value="{$data.user.gender|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+        <div class="layui-input-block">
+            <input type="text" data-rule="IDcard" disabled class="layui-input" name="id_card" value="{$data.user.id_card|default=''}" {if !empty($data.user.id_card)} readonly {/if}>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">期望薪资</label>
+        <div class="layui-input-block">
+            <input type="text" disabled class="layui-input" name="salary_expectation" value="{$data.user.salary_expectation|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工作年限</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled name="work_exp" value="{$data.user.work_exp|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">推荐公司</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled name="work_exp" value="{$data.company.name|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工种</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" disabled name="work_exp" value="{$data.demand.profession.name|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">面试状态</label>
+        <div class="layui-input-block">
+            <select name="status" id="status">
+                <option value="0" {if $data.status eq '0'} selected {/if}>未面试</option>
+                <option value="2" {if $data.status eq '2'} selected {/if}>面试中</option>
+                <option value="1" {if $data.status eq '1'} selected {/if}>面试成功</option>
+                <option value="3" {if $data.status eq '3'} selected {/if}>面试失败</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+      <div class="layui-input-block">
+        <input type="hidden" name='customer_id' value="{$data['customer_id']?$data['customer_id']:''}" id='hidden-customer_id'>
+          <input type="hidden" name='id' value="{$data['id']|default=''}" id='hidden-id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function() {
+    var $ = layui.$
+        , layer = layui.layer
+        , upload = layui.upload
+        , form = layui.form;
+    /* 监听提交 */
+    form.on('submit(addaction)', function (data) {
+        var url = "{:url('LabourCompany/recommend_log_edit')}";
+        var data = $("#addform").serializeArray();
+        jqueryAjax('POST', url, data, successLayui);
+        return false;
+    });
+})
+
+</script>
+<script>
+    $(document).ready( function() {
+      
+            $('.demo').each( function() {
+                //
+                // Dear reader, it's actually very easy to initialize MiniColors. For example:
+                //
+                //  $(selector).minicolors();
+                //
+                // The way I've done it below is just for the demo, so don't get confused 
+                // by it. Also, data- attributes aren't supported at this time. Again, 
+                // they're only used for the purposes of this demo.
+                //
+        $(this).minicolors({
+          control: $(this).attr('data-control') || 'hue',
+          defaultValue: $(this).attr('data-defaultValue') || '',
+          inline: $(this).attr('data-inline') === 'true',
+          letterCase: $(this).attr('data-letterCase') || 'lowercase',
+          opacity: $(this).attr('data-opacity'),
+          position: $(this).attr('data-position') || 'bottom left',
+          change: function(hex, opacity) {
+            var log;
+            try {
+              log = hex ? hex : 'transparent';
+              if( opacity ) log += ', ' + opacity;
+              console.log(log);
+            } catch(e) {}
+          },
+          theme: 'default'
+        });
+                
+            });
+      
+    });
+  </script>

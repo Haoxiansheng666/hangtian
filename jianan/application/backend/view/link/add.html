@@ -1,0 +1,74 @@
+{include file="public/header" /}
+{include file="public/ueditor" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  .input_img_inline{
+    float: none !important;
+    width: 100px !important;
+  }
+  .layui-upload-list{
+      display: inline-block;
+  }
+  .icon_view, .layui-upload-img {
+      width: 80px;
+      height: 80px;
+  }
+  </style>
+<form class="layui-form"  style="margin-top:30px;width:80%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+          <input type="text" name="title" lay-verify="required|title"  placeholder="" class="layui-input" value="{$link['title']?$link['title']:''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">链接<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="url" lay-verify="required|title"  placeholder="" class="layui-input" value="{$link['url']?$link['url']:''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序<span class="reqcolor">*</span></label>
+        <div class="layui-input-block">
+            <input type="text" name="ord" lay-verify="required|title"  placeholder="" class="layui-input" value="{$link['ord']?$link['ord']:0}">
+        </div>
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+        <div class="layui-input-block">
+        <input  type="hidden" name='id' value="{$link['id']?$link['id']:''}" id='hidden-id'>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">保 存</button>
+
+        </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form
+    , upload = layui.upload;
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+        {if isset($link['id']) && $link.id}
+        var url = "{:url('link/edit')}";
+        {else}
+        var url = "{:url('link/add')}";
+        {/if}
+
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+  });
+
+</script>

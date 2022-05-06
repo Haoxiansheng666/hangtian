@@ -1,0 +1,43 @@
+<view class="nav_max">
+  <scroll-view scroll-x="true">
+    <view class="scr_vi" style="width: {{nvaList.length * 200}}rpx;">
+      <block wx:for="{{NavLs}}" wx:key="unique">
+        <view class="nav_box">
+          <view class="navSub wx:if:'{{SelectNavID == index ? 'Select_' : ''}}' " bindtap="SelectNav" data-id='{{index}}'>{{item.cate}}</view>
+          <view class="navSub_split  wx:if:'{{SelectNavID == index ? '' : 'navSub_split_'}}'">
+            <view></view>
+          </view>
+        </view> 
+      </block>
+    </view>
+  </scroll-view>
+  <scroll-view scroll-x="true">
+    <view class="scrv_t" style="width:{{typeList.length * 171}}rpx;">
+      <block wx:for="{{NavLs[SelectNavID].child}}" wx:key="unique">
+        <view class="scrvt_c wx:if='{{index == typeID?'scrvt_c_':''}}'" bindtap="SelectType" data-id="{{index}}">{{item.cate}}</view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="subject">
+  <view class="sub_title">
+    <view class="sub_t_t">姓名</view>
+    <view class="sub_t_t">证书编号</view>
+    <view class="sub_t_t">到期时间</view>
+  </view>
+  <view class="sub_cent">
+    <block wx:for="{{dataLs}}" wx:key="unique">
+      <view bindtap="certificateDetails" class="sub_title sub_cent_ wx:if:{{item.id % 2 == 0?'scq':'sc'}}">
+        <view class="sub_c_t">{{item.name}}</view>
+        <view class="sub_c_t">{{item.code}}</view>
+        <view class="sub_c_t">{{item.end_time}}</view>
+      </view>
+    </block>
+  </view>
+</view>
+
+<view class="isnull" wx:if="{{dataLs == ''}}">
+  <image src="/static/image/null.png"></image>
+  <view>这里空空如也...</view>
+</view>

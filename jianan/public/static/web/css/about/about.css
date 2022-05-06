@@ -1,0 +1,22 @@
+.abouts{
+	width: 100%;
+	padding: 102px 0 118px;
+}
+.alun{
+	width: 1400px;
+	margin: 0 auto;
+}
+.alun>ul{
+	width: 100%;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 0;
+	margin: 0 auto;
+}
+.alun>ul>li{
+	display: inline-block;
+	padding: 0 30px;
+	color: #333333;
+	font-size: 22px;
+}

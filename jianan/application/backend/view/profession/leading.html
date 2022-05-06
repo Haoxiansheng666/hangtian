@@ -1,0 +1,111 @@
+{include file="public/header" /}
+{include file="public/ueditor" /}
+<style type="text/css">
+  html{
+    background-color:#fff;
+  }
+  .input_img_inline{
+    float: none !important;
+    width: 100px !important;
+  }
+  .layui-upload-list{
+      display: inline-block;
+  }
+  .icon_view, .layui-upload-img {
+    margin-left: 20px;
+      width: 60px;
+      height: 60px;
+  }
+  </style>
+<form class="layui-form"  style="margin-top:30px;width:80%;" id="addform" onkeydown="if(event.keyCode==13){return false;}">
+      <div class="layui-form-item" style="margin-top: 10px;" >
+        <label class="layui-form-label" style="">导入模板</label>
+        <div class="layui-upload layui-input-block">
+             <a href="{:url('Profession/muban')}" class="layui-btn layui-btn-warm layui-btn-sm">下载模板</a>
+        </div>
+      </div>
+      <div class="layui-form-item" style="margin-top: 2px;" id="add">
+        <label class="layui-form-label" style="margin-top:10px;">文件<br/>(最大10M)<span class="reqcolor">*</span></label>
+        <div class="layui-upload layui-input-block">
+             <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="images">选择文件</button>
+              <div class="layui-upload-list">
+                  <img class="layui-upload-img" style="border:none;" id="preview">
+                  <p id="imgText1"></p>
+              </div>
+        </div>
+      </div>
+      <input type="hidden" name="fileurl" id="fileurl" lay-verify="fileurl" value="">
+    <div class="layui-form-item" style="text-align:center;margin-top: 20px;">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit="" lay-filter="addaction">确 定</button>
+      </div>
+    </div>
+</form>
+<script>
+layui.config({
+    base: '__STATICBACKEND__/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'form', 'laydate', 'upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,element = layui.element
+    ,layer = layui.layer
+    ,laydate = layui.laydate
+    ,form = layui.form
+    , upload = layui.upload;
+    /* 自定义验证规则 */
+    form.verify({
+      fileurl: function(value){
+          var fileurl = $('#fileurl').val();
+          if(fileurl == ''){
+               return '请上传文件';
+          } 
+      }
+    });
+    /* 监听提交 */
+    form.on('submit(addaction)', function(data){
+      var url = "{:url('Profession/leading')}";
+      var data =$("#addform").serializeArray();
+      jqueryAjax('POST',url,data,successLayui);
+      return false;
+    });
+    //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#images'
+            ,accept: 'file' //普通文件
+            ,exts: 'xls|xlsx|csv' //只允许上传压缩文件
+            ,size: 10240 //限制文件大小，10m
+            , method: 'POST'
+            , url: "{:Url('Upload/layuiFileUpload')}"
+            , field: 'fileurl'
+            , data: {
+                dir: 'file' +
+                ''
+            }
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#preview').attr('src', '/static/backend/other/excel.png'); //图片链接（base64）
+                    console.log(result);
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                } else {
+                    var path = res.data;
+                    $('#fileurl').val(path);
+                    data['fileurl'] = path;
+                }
+                //上传成功
+            }
+            , error: function (res) {
+                $('#preview').attr('src', '')
+                layer.alert('文件上传出错了！');
+            }
+        });
+  });
+
+</script>

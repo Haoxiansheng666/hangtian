@@ -1,0 +1,30 @@
+<view class="nav_max">
+  <scroll-view scroll-x="true">
+    <view class="scr_vi" style="width: {{nvaList.length * 200}}rpx;">
+      <block wx:for="{{nvaList}}" wx:key="unique">
+        <view class="nav_box">
+          <view class="navSub wx:if:'{{SelectNavID == index ? 'Select_' : ''}}' " bindtap="SelectNav" data-id='{{index}}'>{{item.cate}}</view>
+          <view class="navSub_split  wx:if:'{{SelectNavID == index ? '' : 'navSub_split_'}}'">
+            <view></view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="sub_box">
+  <block wx:for="{{nvaList[SelectNavID].child}}" wx:key="unique">
+    <view class="subject" bindtap="CPD" data-id="{{item.id}}">
+      <view>{{item.cate}}</view>
+      <view>
+        <image src="/static/image/12.png" />
+      </view>
+    </view>
+  </block>
+</view>
+
+<view class="isnull" wx:if="{{nvaList[SelectNavID].child == ''}}                                                                                                                                                                                                                                                                                                                              ">
+  <image src="/static/image/null.png"></image>
+  <view>这里空空如也...</view>
+</view>

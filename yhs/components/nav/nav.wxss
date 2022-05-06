@@ -1,0 +1,34 @@
+.navSub {
+    width: 33.33%;
+    text-align: center;
+    margin: auto;
+    font-size: 28rpx;
+    font-family: OPPOSans;
+    font-weight: 400;
+    color: #333333;
+}
+.nav_max{
+    background-color: white;
+}
+.navSub_split_{
+    opacity: 0;
+}
+.Select_ {
+    font-size: 32rpx !important;
+    font-weight: bold !important;
+    color: #181818 !important;
+}
+
+.navSub_split {
+    margin: auto;
+    width: 29rpx;
+    height: 7rpx;
+    background: #1684FC;
+    margin-top: 13rpx;
+}
+
+.nav_box {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}

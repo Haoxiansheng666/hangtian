@@ -1,0 +1,242 @@
+{include file="public/header" /}
+
+<style type="text/css">
+    html {
+        background-color: #fff;
+    }
+
+    .layui-tab-brief {
+        margin: 30px 50px;
+    }
+
+    .layui-timeline {
+        margin-top: 30PX;;
+    }
+
+    .center-margin-top {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .padding-bottom_60 {
+        padding-bottom: 60px;
+    }
+    .border_style3{
+        border: 2px solid #d3d3d3;
+        padding: 30px 30px 15px 0;
+        margin-bottom: 30px;
+    }
+</style>
+<blockquote class="layui-elem-quote" style="margin-top:36px;margin-left: 30px;">
+    {$ress.customer.name}
+    <a class="layui-btn  layui-btn-sm layui-btn-warm" href="{$data.refund}" style="float:right;">
+        <i class="layui-icon">&#xe65c;</i>返回列表
+    </a>
+</blockquote>
+<div class="bg">
+    <img class="bgImg" style="max-width: 100%; max-height: 100%; position: fixed;" src="">
+</div>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">客户详情</li>
+        <li>缴费详情</li>
+    </ul>
+    <div class="layui-tab-content " style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <form class="layui-form" style="margin-top:20px;">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户称呼</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$ress['customer']['name']?$ress['customer']['name']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">电话</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="mobile" type="text" value="{$ress['customer']['mobile']?$ress['customer']['mobile']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" data-rule="IDcard" disabled name="mobile" type="text" value="{$ress['customer']['id_card']?$ress['customer']['id_card']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户单位名称</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="mobile" type="text" value="{$ress['customer']['company']?$ress['customer']['company']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">批次号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="batch_number" type="text" value="{$ress['batch_number']?$ress['batch_number']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">报名人数</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="apply_num" type="text" value="{$ress['apply_num']?$ress['apply_num']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">课程总金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="total_price" type="text" value="{$ress['total_price']?$ress['total_price']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">缴费金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_price" type="text" value="{$ress['pay_price']?$ress['pay_price']:''}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">缴费状态</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_status_text" type="text" value="{$ress['pay_status_text']?$ress['pay_status_text']:''}">
+                    </div>
+                </div>
+                {if $ress.pay_status == 1}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">缴费结清时间</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" disabled name="pay_end_time_text" type="text" value="{$ress['pay_end_time_text']?$ress['pay_end_time_text']:''}">
+                    </div>
+                </div>
+                {/if}
+            </form>
+        </div>
+        <div class="layui-tab-item">
+            <form class="layui-form" style="margin-top:20px;">
+                {if !empty($pay_log)}
+                {foreach $pay_log as $k => $v}
+                <div class="border_style3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">缴费金额</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$v.pay_price}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">付费方式</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$v.pay_way_text}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">付费渠道</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$v.pay_site_text}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">支付方式</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$v.proceeds_type_text}">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">付费凭证</label>
+                        <div class="layui-input-block">
+                            <img class="enlargeImg" src="{$v.pay_proof}" alt="">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">付费类型</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" disabled lay-verify="required" name="name" type="text" value="{$v.type_text}">
+                        </div>
+                    </div>
+                </div>
+                {/foreach}
+                {else}
+                <div class="layui-form-item">
+                    暂无缴费记录
+                </div>
+                {/if}
+            </form>
+        </div>
+        <div style="height: 50px;width: 100%;overflow: hidden"></div>
+    </div>
+
+</div>
+<div class="bg">
+    <img class="bgImg" style="max-width: 100%; max-height: 100%; position: fixed;" src="">
+</div>
+<style>
+    .layui-table-cell {
+        height: auto;
+
+        line-height: 28px;
+
+    }
+    .fillbg { background-color: rgba(0, 0, 0, 0.6); bottom: 0; height: 100%; left: 0; opacity: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 1100; display:none; }
+    .fillbg-active { opacity: 1; display:block; }
+</style>
+<script>
+    layui.use(['table', 'form'], function() {
+        var table = layui.table
+            , form = layui.form;
+        $('.image_max img').on('click', function () {
+            layer.photos({
+                photos: ".image_max",
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+        $('.image_max1 img').on('click', function () {
+            layer.photos({
+                photos: ".image_max1",
+                shadeClose: false,
+                closeBtn: 2,
+                anim: 0
+            });
+        })
+    })
+    var newImg;
+    var clientH=$(window).height();
+    var clientW=$(window).width();
+    var w = '250';
+    var h = '250';
+    $(document).ready(function(){
+        $(document).on('click','.enlargeImg',function () {
+            newImg = $(this)[0].src;
+            $("body").append('<div class="fillbg"></div>');
+            $(".fillbg").addClass("fillbg-active");
+            $('.bg').css({'position':"fixed","top":"5%",'display':"flex",'justify-content':'center','width':"100%",'z-index':1101});
+            $('.bgImg').css({'height': '90%','z-index':1101});
+            $('.bgImg').attr("src",newImg);
+        });
+        $(document).on('click','.bgImg',function () {
+            $(".fill-input").removeClass("fill-input-active");
+            setTimeout(function(){
+                $(".fillbg-active").removeClass("fillbg-active");
+                $(".fillbg").remove();
+            },300);
+            $('.bgImg').css({'width': '0px','height': '0px'});
+            $('.bgImg').attr("src",'');
+        });
+        // $(".enlargeImg").bind("click", function(){
+        //     newImg = $(this)[0].src;
+        //     $("body").append('<div class="fillbg"></div>');
+        //     $(".fillbg").addClass("fillbg-active");
+        //     $('.bgImg').css({'width': w+"px",'height': h+"px",'top':(clientH-h)/2+"px",'left':(clientW-w)/2+"px",'z-index':1101});
+        //     $('.bgImg').attr("src",newImg);
+        // });
+
+        // $(".bgImg").bind("click", function(){
+        //     $(".fill-input").removeClass("fill-input-active");
+        //     setTimeout(function(){
+        //         $(".fillbg-active").removeClass("fillbg-active");
+        //         $(".fillbg").remove();
+        //     },300);
+        //     $('.bgImg').css({'width': '0px','height': '0px'});
+        //     $('.bgImg').attr("src",'');
+        // });
+    });
+</script>
+{include file="public/footer" /}
+

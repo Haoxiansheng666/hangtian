@@ -1,0 +1,70 @@
+{include file="public/header" /}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                    新闻分类列表
+                <a href="javascript:;"  class="layui-btn layui-btn-sm layui-btn-normal" onclick="add_data('添加分类',0)" style="float:right;margin-top: 10px;">+添加分类</a>
+            </div>
+            <div class="layui-card-body">
+                <table class="layui-table">
+                  <thead>
+                    <tr>
+                        <th width="">ID</th>
+                        <th width="">分类名称</th>
+                        <th width="">描述</th>
+                        <th width="">分类图标</th>
+                        <th width="">排序</th>
+                        <th width="">状态</th>
+                        <th width="">添加部门</th>
+                        <th width="">添加人</th>
+                        <th width="">添加时间</th>
+                        <th width="">操作</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    {foreach $data as $vo}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.contents}</td>
+                        <td>{$vo.img}</td>
+                        <td>{$vo->ord}</td>
+                        <td><span class="{$vo['status']==1? '':'layui-bg-orange'}  radius">{$vo['status']==1? '已启用' : '已禁用'}</span>
+                        </td>
+                        <td>{$vo->hasGroupone->group_name?$vo->hasGroupone->group_name:''}</td>
+                        <td>{$vo->hasAuone->real_name?$vo->hasAuone->real_name:''}</td>
+                        <td>{$vo->ctime}</td>
+                        <td>
+                            <div class="layui-btn-group">
+                                <button class="layui-btn layui-btn-sm"  onclick="add_data('编辑分类',{$vo['id']})"><i class="layui-icon">&#xe642;</i>编辑</button>
+                                <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="del({$vo.id})"><i class="layui-icon" >&#xe640;</i>删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {/foreach}
+                  </tbody>
+                </table>
+            </div>
+            <div class="pagelist">
+            {$data->render()}
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function add_data(title,id){
+        var url = "{:url('News/cateAdd')}"+ '?id=' + id;
+        x_admin_show(title,url,500,500);
+    }
+    function del(id){
+        layer.confirm('确认要删除吗？',function(index){
+            var url = "{:url('News/cateDelete')}";
+            jqueryAjax('POST',url,{id:id},successReload);
+        });
+    }
+</script>
+{include file="public/footer" /}
+

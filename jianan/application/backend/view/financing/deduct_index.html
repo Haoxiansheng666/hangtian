@@ -1,0 +1,282 @@
+{include file="public/header" /}
+<style type="text/css">
+  .layui-btn+.layui-btn {
+      margin-left: 0px;
+  }
+  .layui-card-header.layuiadmin-card-header-auto {
+      padding-top: 12px;
+      padding-bottom: 8px;
+  }
+  .layui-table-cell{
+      height:40px;
+      line-height: 40px;
+  }
+    .search_date{
+        border: #e6e6e6 solid 1px;
+        padding: 7px 10px;
+    }
+</style>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto" >
+        <div class="layui-form-item search" >
+          <div class="layui-input-inline" style="width:100px;">
+              <select name="auid" lay-search="" id="selectauid">
+                <option value="">业务员</option>
+                <?php  if(isset($aulist)){  ?>
+                {foreach $aulist as $k=>$v}
+                <option value="{$v.id}">{$v.real_name}</option>
+                {/foreach}
+                <?php  } ?>
+              </select>
+          </div>
+            <div class="layui-input-inline" style="width:265px;">
+                <span style="float: left;margin: 0 10px;">创建时间</span>
+                <input type="date" name="action_time" class="search_date">
+
+            </div>
+            <div class="layui-input-inline" style="width:165px;">
+                <input type="date" name="end_time" class="search_date">
+            </div>
+          
+          <div class="layui-inline">
+            <button class="layui-btn  layui-btn-normal" data-type="reload">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="layui-card-body ">
+        <table id="layui-table" lay-filter="layui-table-tool"></table>
+        <script type="text/html" id="barTpl">
+<!--            {if in_array('99',$rule_ids)}-->
+<!--          <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>-->
+<!--            {/if}-->
+          {{# if(d.status == 0){ }}
+          <a class="layui-btn layui-btn-xs" lay-event="tongyi">同意</a>
+          <a class="layui-btn layui-btn-xs" lay-event="jujue">拒绝</a>
+          {{# } }}
+        </script>
+        <script type="text/html" id="adminTpl">
+          {{ d.admin.real_name }}
+        </script>
+          <script type="text/html" id="nameTpl">
+              {{# if(!d.student){ }}
+              {{ d.customer.name }}
+              {{# }else{ }}
+              {{ d.student.name }}
+              {{# } }}
+          </script>
+          <script type="text/html" id="mobileTpl">
+              {{# if(!d.student){ }}
+              {{ d.customer.mobile }}
+              {{# }else{ }}
+              {{ d.student.mobile }}
+              {{# } }}
+          </script>
+          <script type="text/html" id="professionTpl">
+              {{# if(typeof(d.profession) == 'undefined' || d.profession == '' || d.profession == null){ }}
+              未选择工种
+              {{# }else{ }}
+              {{ d.profession_name_text??'无' }}
+              {{# } }}
+          </script>
+      </div>
+    </div>
+  </div> 
+  <script>
+    layui.use(['table', 'form'], function(){
+        var table = layui.table
+        , form = layui.form;
+        //第一个实例
+        table.render({
+            elem: '#layui-table'
+            ,url: "{:Url('Financing/getDeductData')}" //数据接口
+            // ,width: 892
+            //,height: 500
+            ,height: 'full-180' //高度最大化减去差值
+            ,page: { 
+              layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+              ,curr: 1 //设定初始在第 5 页
+              ,groups: 5 //只显示 1 个连续页码
+              ,first: false //不显示首页
+              ,last: false //不显示尾页
+            }
+            ,limit:15
+            ,limits:[5,12,15,30,45,60,75,90]
+            ,cols: [[ //表头
+                {field: 'id', title: '编号', width:80}
+                ,{title: '学员名称', templet: '#nameTpl'}
+                ,{title: '学员手机号', templet: '#mobileTpl'}
+                ,{title: '工种', templet: '#professionTpl',width:240}
+                ,{title: '业务员', templet: '#adminTpl'}
+                ,{field: 'price', title: '提成金额' }
+                ,{field: 'status_text', title: '状态' }
+                ,{field: 'create_time_text', title: '创建时间' }
+                ,{title: '操作', templet: '#barTpl' }
+            ]]
+            ,id: 'tablereload'
+        });
+        var $ = layui.$, active = {
+          getCheckData: function(){ //获取选中数据
+            var checkStatus = table.checkStatus('tablereload')
+            ,data = checkStatus.data;
+            var delList=[];
+            data.forEach(function(n,i){
+                  delList.push(n.id);
+             });
+            if(delList==''){
+              layer.msg('未选择数据！',{icon: 2,time:2000});
+              return false;
+            };
+            layer.confirm('确认要删除吗？删除就无法恢复',function(){
+                var data1 = {did: delList};
+                var url = "{:Url('Customer/delete')}";
+                jqueryAjax('POST',url,data1,successReload); 
+            });
+          },
+          reload: function(){
+              var auid = $("#selectauid option:selected").val(),
+                  from_val = $("#selectfrom option:selected").val();
+              if (auid && from_val == ''){
+                layer.msg('若查询业务员，请选择客户分类');
+                return false;
+              }
+              //执行重载
+              table.reload('tablereload', {
+                  page: {
+                      curr: 1 //重新从第 1 页开始
+                  }
+                  ,where: {
+                      auid: auid,
+                      action_time: $("input[name='action_time']").val(),
+                      end_time: $("input[name='end_time']").val(),
+                  }
+              });
+          }
+        };
+        $('.search .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听工具条
+        table.on('tool(layui-table-tool)', function(obj){
+            iss = $(this);
+            if(obj.event === 'detail'){
+                var id = obj.data.id
+                var url = "{:Url('Financing/audit_detail')}" + '?id=' + id;
+                x_admin_show('详情',url,1100,800);
+            }else if(obj.event === 'tongyi'){
+                layer.confirm('请确定同意此条财务审核',function(index){
+                    var url = "{:Url('Financing/deduct_tongyi')}";
+                    var data = {id:obj.data.id};
+                    jqueryAjax('POST',url,data,successReload);
+                });
+
+            }else if(obj.event === 'jujue'){
+                layer.confirm('请确定拒绝此条财务审核',function(index){
+                    let id = obj.data.id;
+                    var url = "{:Url('Financing/deduct_jujue')}" + "?id="+id;
+                    layer.close(index);
+                    x_admin_show('拒绝财务审核原因',url,600,400);
+                });
+            }
+
+        });
+// 工种一级栏目
+        form.on('select(cate_id)', function(data){
+            let v = data.value;
+            var pid;
+            $.ajax({
+                type:"POST",
+                url:"{:url('Profession/selectData')}",
+                data: {cate_id : data.value},
+                dataType:"json",
+                success:function(res){
+                    if (res.code == 1){
+                        let list = res.data;
+                        $("#pid").empty();
+                        var t;
+                        for (let i=0; i < list.length; i++){
+                            if (i == 0){
+                                pid = list[i]['id'];
+                            }
+                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                        }
+                        if (pid){
+                            $.ajax({
+                                type:"POST",
+                                url:"{:url('Profession/selectSonData')}",
+                                data: {cate_id : pid},
+                                dataType:"json",
+                                success:function(res){
+                                    if (res.code == 1){
+                                        let list = res.data;
+                                        $("#profession_id").empty();
+                                        var t;
+                                        for (let i=0; i < list.length; i++){
+                                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                                        }
+                                        $("#profession_id").append(t);
+                                        // 添加完记得render下  否则不会刷新到页面中
+                                        form.render('select');
+                                    }else{
+                                        $("#profession_id").empty();
+                                    }
+                                },
+                                error:function(res){
+                                    $("#profession_id").empty();
+                                    return false;
+                                }
+                            });
+                        }
+                        $("#pid").append(t);
+                        // 添加完记得render下  否则不会刷新到页面中
+                        form.render('select');
+                    }else{
+                        $("#pid").empty();
+                    }
+                },
+                error:function(res){
+                    $("#pid").empty();
+                    return false;
+                }
+            });
+
+        });
+        // 工种列表
+        form.on('select(pid)', function(data){
+            let v = data.value;
+            $.ajax({
+                type:"POST",
+                url:"{:url('Profession/selectSonData')}",
+                data: {cate_id : data.value},
+                dataType:"json",
+                success:function(res){
+                    if (res.code == 1){
+                        let list = res.data;
+                        $("#profession_id").empty();
+                        var t;
+                        for (let i=0; i < list.length; i++){
+                            t += `<option value="`+list[i]['id']+`">`+list[i]['name']+`</option>`;
+                        }
+                        $("#profession_id").append(t);
+                        // 添加完记得render下  否则不会刷新到页面中
+                        form.render('select');
+                    }else{
+                        $("#profession_id").empty();
+                    }
+                },
+                error:function(res){
+                    $("#profession_id").empty();
+                    return false;
+                }
+            });
+        });
+    });
+  </script>
+</body>
+</html>
+
